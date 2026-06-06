@@ -5,33 +5,43 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Solflare Empire — Guardian Codex</title>
   <meta name="description" content="Enter your X username to reveal your Guardian profile, strengths, skills, and Empire class." />
+  <!-- OG / Social sharing -->
+  <meta property="og:title" content="Solflare Empire — Guardian Codex" />
+  <meta property="og:description" content="Discover your Guardian class and Empire strengths. Enter your X username to reveal your profile." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="Solflare_LOGO_SOL_Yellow.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Solflare Empire — Guardian Codex" />
+  <meta name="twitter:description" content="Discover your Guardian class and Empire strengths. Enter your X username to reveal your profile." />
+  <meta name="twitter:image" content="Solflare_LOGO_SOL_Yellow.png" />
+  <meta name="theme-color" content="#eab308" />
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Cinzel:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&family=Cinzel:wght@500;600;700;800&family=DM+Serif+Display&display=swap" rel="stylesheet">
   <style>
     :root {
       --gold: #eab308;
       --gold-bright: #facc15;
       --gold-dim: rgba(234,179,8,0.12);
+      --gold-soft: rgba(234,179,8,0.08);
       --panel-border: rgba(234,179,8,0.15);
+      --panel-border-strong: rgba(234,179,8,0.24);
       --text: #f0ead6;
       --muted: #a89f77;
       --faint: #6b6547;
+      --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
     }
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
-
     body {
       margin: 0;
       min-height: 100vh;
-      font-family: 'Inter', sans-serif;
+      font-family: 'DM Sans', sans-serif;
       color: var(--text);
-      background: #060606;
+      background: #050504;
       overflow-x: hidden;
     }
-
-    /* Ambient background */
     body::before {
       content: "";
       position: fixed;
@@ -39,12 +49,11 @@
       pointer-events: none;
       z-index: 0;
       background:
-        radial-gradient(ellipse 70% 45% at 50% 0%, rgba(234,179,8,0.13) 0%, transparent 70%),
-        radial-gradient(ellipse 40% 30% at 10% 60%, rgba(234,179,8,0.05) 0%, transparent 60%),
-        radial-gradient(ellipse 40% 30% at 90% 80%, rgba(234,179,8,0.04) 0%, transparent 60%);
+        radial-gradient(ellipse 80% 55% at 50% -5%, rgba(234,179,8,0.18) 0%, transparent 65%),
+        radial-gradient(ellipse 50% 40% at 8% 55%, rgba(234,179,8,0.07) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 40% at 92% 75%, rgba(234,179,8,0.06) 0%, transparent 60%),
+        radial-gradient(ellipse 30% 20% at 50% 100%, rgba(234,179,8,0.04) 0%, transparent 70%);
     }
-
-    /* Grid overlay */
     body::after {
       content: "";
       position: fixed;
@@ -57,25 +66,22 @@
       background-size: 40px 40px;
       mask-image: radial-gradient(ellipse 80% 80% at 50% 40%, black 30%, transparent 100%);
     }
-
     .display { font-family: 'Cinzel', serif; }
     .relative-z { position: relative; z-index: 1; }
-
-    /* Glass panel */
     .glass {
       background: linear-gradient(160deg, rgba(20,19,16,0.92), rgba(12,12,10,0.96));
       border: 1px solid var(--panel-border);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
-      box-shadow: 0 2px 4px rgba(0,0,0,0.4), 0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.03) inset;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.36), 0 18px 50px rgba(0,0,0,0.48), 0 0 0 1px rgba(255,255,255,0.03) inset;
+      transition: transform 260ms var(--ease-premium), border-color 240ms ease, box-shadow 260ms var(--ease-premium), background 240ms ease;
+      will-change: transform, border-color, box-shadow;
     }
-
-    .card-subtle {
-      background: rgba(255,255,255,0.025);
-      border: 1px solid rgba(255,255,255,0.06);
+    .glass:hover {
+      transform: translateY(-2px);
+      border-color: rgba(234,179,8,0.2);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.38), 0 24px 64px rgba(0,0,0,0.52), 0 0 0 1px rgba(255,255,255,0.035) inset;
     }
-
-    /* Gold button */
     .btn-primary {
       background: linear-gradient(135deg, #fde047 0%, #eab308 50%, #ca8a04 100%);
       color: #0a0800;
@@ -86,38 +92,78 @@
       border: none;
       cursor: pointer;
       box-shadow: 0 8px 24px rgba(234,179,8,0.3), inset 0 1px 0 rgba(255,255,255,0.35);
-      transition: transform 180ms cubic-bezier(0.16,1,0.3,1), box-shadow 180ms cubic-bezier(0.16,1,0.3,1), filter 180ms ease;
+      transition: transform 220ms var(--ease-premium), box-shadow 220ms var(--ease-premium), filter 180ms ease;
     }
-    .btn-primary:hover { transform: translateY(-2px); filter: brightness(1.05); box-shadow: 0 14px 32px rgba(234,179,8,0.38), inset 0 1px 0 rgba(255,255,255,0.35); }
-    .btn-primary:active { transform: translateY(0); }
+    .btn-primary:hover { transform: translateY(-2px) scale(1.01); filter: brightness(1.05); box-shadow: 0 14px 32px rgba(234,179,8,0.38), inset 0 1px 0 rgba(255,255,255,0.35); }
+    .btn-primary:active { transform: translateY(0) scale(0.995); }
     .btn-primary:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
-
-    /* Input */
+    .btn-oath-like {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(234,179,8,0.42);
+      background: radial-gradient(circle at 50% 40%, rgba(250,204,21,0.34), rgba(234,179,8,0.16) 45%, rgba(234,179,8,0.08) 100%);
+      color: #f8e7a0;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      font-family: 'Cinzel', serif;
+      font-weight: 700;
+      box-shadow: 0 0 0 1px rgba(234,179,8,0.18) inset, 0 0 22px rgba(234,179,8,0.24), 0 22px 56px rgba(0,0,0,0.42);
+      transition: transform 260ms var(--ease-premium), box-shadow 260ms var(--ease-premium), border-color 220ms ease, filter 220ms ease;
+    }
+    .btn-oath-like::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.16), transparent 48%, rgba(255,255,255,0.06));
+      opacity: 0.65;
+      pointer-events: none;
+    }
+    .btn-oath-like::after {
+      content: "";
+      position: absolute;
+      inset: -10px;
+      border-radius: inherit;
+      background: radial-gradient(circle, rgba(234,179,8,0.22), transparent 68%);
+      filter: blur(14px);
+      opacity: 0.7;
+      z-index: -1;
+    }
+    .btn-oath-like:hover {
+      transform: translateY(-3px) scale(1.02);
+      border-color: rgba(234,179,8,0.72);
+      box-shadow: 0 0 0 1px rgba(234,179,8,0.22) inset, 0 0 34px rgba(234,179,8,0.34), 0 26px 62px rgba(0,0,0,0.45);
+      filter: brightness(1.04);
+    }
+    .btn-oath-icon {
+      color: var(--gold2);
+      font-size: 0.95rem;
+      text-shadow: 0 0 10px rgba(234,179,8,0.5);
+    }
+    .btn-oath-text {
+      position: relative;
+      z-index: 1;
+      font-size: 0.86rem;
+    }
     .input-field {
       background: rgba(255,255,255,0.03);
       border: 1px solid rgba(234,179,8,0.16);
       color: var(--text);
-      font-family: 'Inter', sans-serif;
+      font-family: 'DM Sans', sans-serif;
       font-size: 1rem;
-      transition: border-color 180ms ease, box-shadow 180ms ease;
+      transition: border-color 180ms ease, box-shadow 180ms ease, background 180ms ease;
       outline: none;
     }
     .input-field::placeholder { color: var(--faint); }
-    .input-field:focus {
-      border-color: rgba(234,179,8,0.45);
-      box-shadow: 0 0 0 3px rgba(234,179,8,0.08);
-    }
-
-    /* Stat chip */
+    .input-field:focus { border-color: rgba(234,179,8,0.45); box-shadow: 0 0 0 3px rgba(234,179,8,0.08); background: rgba(255,255,255,0.04); }
     .stat-chip {
       background: rgba(255,255,255,0.03);
       border: 1px solid rgba(255,255,255,0.07);
       border-radius: 1rem;
       padding: 0.75rem 1.25rem;
       text-align: center;
+      transition: transform 220ms var(--ease-premium), border-color 220ms ease, background 220ms ease;
     }
-
-    /* Skill card */
+    .stat-chip:hover { transform: translateY(-1px); border-color: rgba(234,179,8,0.14); background: rgba(255,255,255,0.04); }
     .skill-card {
       background: linear-gradient(160deg, rgba(234,179,8,0.08), rgba(234,179,8,0.02) 60%, rgba(10,10,10,0.6));
       border: 1px solid rgba(234,179,8,0.14);
@@ -125,120 +171,507 @@
       padding: 1.25rem;
       position: relative;
       overflow: hidden;
-      transition: transform 200ms ease, box-shadow 200ms ease;
+      transition: transform 260ms var(--ease-premium), box-shadow 260ms var(--ease-premium), border-color 220ms ease, background 220ms ease;
+      will-change: transform, box-shadow, border-color;
     }
-    .skill-card:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(0,0,0,0.4); }
-    .skill-card::after {
-      content: "";
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(234,179,8,0.5), transparent);
-    }
-
-    /* Progress bar */
+    .skill-card:hover { transform: translateY(-3px); box-shadow: 0 14px 34px rgba(0,0,0,0.42); border-color: rgba(234,179,8,0.22); background: linear-gradient(160deg, rgba(234,179,8,0.10), rgba(234,179,8,0.025) 60%, rgba(10,10,10,0.62)); }
+    .skill-card::after { content: ""; position: absolute; bottom: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(234,179,8,0.5), transparent); }
     .progress-bg { background: rgba(255,255,255,0.06); border-radius: 99px; overflow: hidden; }
-    .progress-fill {
-      height: 100%;
-      border-radius: 99px;
-      background: linear-gradient(90deg, #facc15, #eab308);
-      box-shadow: 0 0 14px rgba(234,179,8,0.4);
-      transition: width 900ms cubic-bezier(0.16,1,0.3,1);
-    }
-
-    /* Scan animation */
-    @keyframes scanLine {
-      0% { transform: translateY(-100%); opacity: 0; }
-      10% { opacity: 1; }
-      90% { opacity: 1; }
-      100% { transform: translateY(500%); opacity: 0; }
-    }
-    .scan-line {
-      position: absolute;
-      left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, rgba(234,179,8,0.8), transparent);
-      animation: scanLine 1.8s ease-in-out infinite;
-      pointer-events: none;
-    }
-
-    /* Spinner */
+    .progress-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, #facc15, #eab308); box-shadow: 0 0 14px rgba(234,179,8,0.4); transition: width 1100ms var(--ease-premium); }
+    @keyframes scanLine { 0% { transform: translateY(-100%); opacity: 0; } 12% { opacity: 1; } 88% { opacity: 1; } 100% { transform: translateY(500%); opacity: 0; } }
+    .scan-line { position: absolute; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, rgba(234,179,8,0.85), transparent); animation: scanLine 1.8s ease-in-out infinite; pointer-events: none; }
+    .scan-overlay { opacity: 0; transition: opacity 220ms ease; }
     @keyframes spin { to { transform: rotate(360deg); } }
-    .spinner {
-      width: 18px; height: 18px;
-      border: 2px solid rgba(0,0,0,0.2);
-      border-top-color: #000;
-      border-radius: 50%;
-      animation: spin 0.7s linear infinite;
-      display: inline-block;
-    }
-
-    /* Fade in up */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    .fade-up { animation: fadeUp 600ms cubic-bezier(0.16,1,0.3,1) both; }
+    .spinner { width: 18px; height: 18px; border: 2px solid rgba(0,0,0,0.2); border-top-color: #000; border-radius: 50%; animation: spin 0.7s linear infinite; display: inline-block; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .fade-up { animation: fadeUp 760ms var(--ease-premium) both; }
     .delay-1 { animation-delay: 80ms; }
     .delay-2 { animation-delay: 160ms; }
     .delay-3 { animation-delay: 240ms; }
     .delay-4 { animation-delay: 320ms; }
     .delay-5 { animation-delay: 400ms; }
-
-    /* Pulse dot */
-    @keyframes pulseDot {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(234,179,8,0.5); }
-      50%       { box-shadow: 0 0 0 6px rgba(234,179,8,0); }
+    @keyframes pulseDot { 0%, 100% { box-shadow: 0 0 0 0 rgba(234,179,8,0.5); } 50% { box-shadow: 0 0 0 6px rgba(234,179,8,0); } }
+    .pulse-dot { animation: pulseDot 2.4s ease-in-out infinite; }
+    .banner-img { width: 100%; height: 100%; object-fit: cover; object-position: center top; border-radius: 1.25rem 1.25rem 0 0; }
+    .banner-fallback { width: 100%; min-height: 220px; background: linear-gradient(135deg, #1a1500, #0d0d00, #111100); border-radius: 1.25rem 1.25rem 0 0; border-bottom: 1px solid rgba(234,179,8,0.1); overflow:hidden; }
+    .avatar-ring { border: 3px solid rgba(234,179,8,0.5); box-shadow: 0 0 0 3px rgba(234,179,8,0.1), 0 0 24px rgba(234,179,8,0.2); }
+    .class-badge { box-shadow: 0 0 24px rgba(234,179,8,0.16), inset 0 0 24px rgba(234,179,8,0.04); background: linear-gradient(135deg, rgba(250,204,21,0.16), rgba(234,179,8,0.06)); border: 1px solid rgba(234,179,8,0.24); }
+    .error-panel { background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.2); border-radius: 1rem; padding: 1rem 1.25rem; color: #fca5a5; font-size: 0.875rem; }
+    .hero-kicker { box-shadow: inset 0 0 0 1px rgba(234,179,8,0.08), 0 0 24px rgba(234,179,8,0.05); }
+    .modal-backdrop {
+      position: fixed; inset: 0; z-index: 100;
+      background: rgba(0,0,0,0.74);
+      backdrop-filter: blur(18px);
+      opacity: 0; pointer-events: none;
+      transition: opacity 260ms var(--ease-premium);
     }
-    .pulse-dot { animation: pulseDot 2s ease-in-out infinite; }
-
-    /* Banner */
-    .banner-img {
-      width: 100%; height: 120px;
-      object-fit: cover;
-      border-radius: 1.25rem 1.25rem 0 0;
+    .modal-backdrop.open { opacity: 1; pointer-events: auto; }
+    .modal-shell {
+      position: absolute;
+      top: 50%; left: 50%;
+      width: min(900px, calc(100vw - 24px));
+      max-height: min(90vh, 860px);
+      overflow: auto;
+      transform: translate(-50%, -46%) scale(0.975);
+      opacity: 0;
+      transition: transform 320ms var(--ease-premium), opacity 260ms var(--ease-premium);
     }
-    .banner-fallback {
-      width: 100%; height: 120px;
-      background: linear-gradient(135deg, #1a1500, #0d0d00, #111100);
-      border-radius: 1.25rem 1.25rem 0 0;
-      border-bottom: 1px solid rgba(234,179,8,0.1);
+    .modal-backdrop.open .modal-shell { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    .loader-insignia {
+      width: min(220px, 46vw);
+      height: auto;
+      filter: drop-shadow(0 0 24px rgba(234,179,8,0.18));
+      animation: insigniaSpin 2.6s linear infinite;
+    }
+    @keyframes insigniaSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    .loader-ring {
+      width: min(320px, 62vw); height: min(320px, 62vw);
+      border-radius: 999px;
+      border: 1px solid rgba(234,179,8,0.14);
+      background: radial-gradient(circle, rgba(234,179,8,0.08), transparent 68%);
+      box-shadow: inset 0 0 32px rgba(234,179,8,0.03), 0 0 50px rgba(234,179,8,0.08);
+    }
+    .modal-ghost {
+      border: 1px solid rgba(234,179,8,0.12);
+      background: linear-gradient(160deg, rgba(20,19,16,0.94), rgba(12,12,10,0.98));
+      box-shadow: 0 2px 4px rgba(0,0,0,0.36), 0 18px 50px rgba(0,0,0,0.52), 0 0 0 1px rgba(255,255,255,0.03) inset;
     }
 
-    /* Avatar ring */
-    .avatar-ring {
-      border: 3px solid rgba(234,179,8,0.5);
-      box-shadow: 0 0 0 3px rgba(234,179,8,0.1), 0 0 24px rgba(234,179,8,0.2);
+    .summary-stage {
+      position: relative;
+      overflow: hidden;
     }
-
-    /* Error state */
-    .error-panel {
-      background: rgba(239,68,68,0.06);
-      border: 1px solid rgba(239,68,68,0.2);
+    .summary-stage::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 35%, rgba(234,179,8,0.08), transparent 58%);
+      pointer-events: none;
+    }
+    .summary-stage::after {
+      content: "";
+      position: absolute;
+      inset: -20%;
+      background: url('Solflare_INSIGNIA_SOL_Yellow.png') center center / min(72vw, 760px) no-repeat;
+      opacity: 0.035;
+      filter: blur(1px) drop-shadow(0 0 30px rgba(234,179,8,0.18));
+      animation: insigniaBgSpin 28s linear infinite;
+      pointer-events: none;
+    }
+    @keyframes insigniaBgSpin { from { transform: rotate(0deg) scale(1); } to { transform: rotate(360deg) scale(1); } }
+    .summary-shell {
+      position: relative;
+      z-index: 1;
+      border-radius: 1.5rem;
+      border: 1px solid rgba(234,179,8,0.18);
+      background: rgba(10,10,8,0.88);
+      box-shadow: 0 0 0 1px rgba(234,179,8,0.05) inset, 0 18px 50px rgba(0,0,0,0.52);
+      overflow: hidden;
+    }
+    .summary-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1rem 1.1rem;
+      border-bottom: 1px solid rgba(234,179,8,0.08);
+      background: rgba(234,179,8,0.03);
+    }
+    .summary-card {
+      background: linear-gradient(160deg, rgba(234,179,8,0.04), rgba(234,179,8,0.01) 58%, rgba(0,0,0,0.24));
+      border: 1px solid rgba(234,179,8,0.11);
+      border-radius: 1.1rem;
+      padding: 0.85rem;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
+    }
+    .summary-header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      margin-bottom: 0.65rem;
+    }
+    .summary-badges {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.5rem;
+      margin-bottom: 0.65rem;
+    }
+    .summary-quote {
+      min-height: 48px;
+      display: flex;
+      align-items: center;
+    }
+    .summary-logo-spin {
+      width: min(140px, 34vw);
+      height: auto;
+      animation: insigniaBgSpin 14s linear infinite;
+      opacity: 0.65;
+      filter: drop-shadow(0 0 18px rgba(234,179,8,0.16));
+    }
+    .summary-banner-wrap {
+      position: relative;
+      z-index: 1;
       border-radius: 1rem;
-      padding: 1rem 1.25rem;
-      color: #fca5a5;
-      font-size: 0.875rem;
+      border: 1px solid rgba(234,179,8,0.14);
+      overflow: hidden;
+      background: linear-gradient(135deg, rgba(234,179,8,0.04), rgba(0,0,0,0.28));
+      min-height: 90px;
+    }
+    .summary-banner-frame {
+      width: 100%;
+      min-height: 90px;
+      aspect-ratio: 5 / 1;
+      overflow: hidden;
+    }
+    .summary-banner-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+      min-height: 90px;
+      filter: saturate(0.95) contrast(1.03) brightness(0.9);
     }
 
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { animation: none !important; transition: none !important; }
+
+    /* ── Grain overlay ─────────────────────────────────────── */
+    .grain-overlay {
+      position: fixed; inset: 0; z-index: 2; pointer-events: none;
+      opacity: 0.028;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size: 180px 180px;
+    }
+
+    /* ── Particles canvas ──────────────────────────────────── */
+    #particleCanvas { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.45; }
+
+    /* ── Hero text shimmer on h1 ───────────────────────────── */
+    @keyframes shimmerText {
+      0% { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+    .hero-title-shine {
+      background: linear-gradient(90deg, #eab308 0%, #fef08a 40%, #eab308 55%, #ca8a04 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmerText 4s linear infinite;
+    }
+
+    /* ── Hero section stagger reveal ──────────────────────── */
+    @keyframes heroReveal {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .hero-reveal { opacity: 0; animation: heroReveal 900ms var(--ease-premium) forwards; }
+    .hero-reveal-1 { animation-delay: 80ms; }
+    .hero-reveal-2 { animation-delay: 220ms; }
+    .hero-reveal-3 { animation-delay: 380ms; }
+    .hero-reveal-4 { animation-delay: 520ms; }
+
+    /* ── Input shimmer sweep on focus ─────────────────────── */
+    @keyframes inputSweep {
+      0%   { left: -120%; }
+      100% { left: 120%; }
+    }
+    .input-wrap { position: relative; overflow: hidden; }
+    .input-wrap::after {
+      content: "";
+      position: absolute; top: 0; width: 60%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(234,179,8,0.06), transparent);
+      pointer-events: none; left: -120%;
+      transition: none;
+    }
+    .input-wrap:focus-within::after { animation: inputSweep 1.1s var(--ease-premium) forwards; }
+
+    /* ── Modal ambient corner glows ───────────────────────── */
+    .modal-ghost {
+      position: relative;
+    }
+    .modal-ghost::before {
+      content: "";
+      position: absolute; top: -1px; left: -1px; right: -1px; bottom: -1px;
+      border-radius: inherit;
+      background:
+        radial-gradient(ellipse 30% 20% at 0% 0%, rgba(234,179,8,0.12), transparent),
+        radial-gradient(ellipse 30% 20% at 100% 100%, rgba(234,179,8,0.08), transparent);
+      pointer-events: none; z-index: -1;
+    }
+
+    /* ── Modal scrollbar ───────────────────────────────────── */
+    .modal-shell::-webkit-scrollbar { width: 4px; }
+    .modal-shell::-webkit-scrollbar-track { background: transparent; }
+    .modal-shell::-webkit-scrollbar-thumb { background: rgba(234,179,8,0.2); border-radius: 99px; }
+    .modal-shell::-webkit-scrollbar-thumb:hover { background: rgba(234,179,8,0.35); }
+
+    /* ── Topbar gold sweep line ────────────────────────────── */
+    .summary-topbar {
+      position: relative;
+    }
+    .summary-topbar::after {
+      content: "";
+      position: absolute; bottom: 0; left: 5%; right: 5%; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(234,179,8,0.35), transparent);
+    }
+
+    /* ── Avatar rotating arc ───────────────────────────────── */
+    @keyframes arcSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    .avatar-arc {
+      position: absolute; inset: -5px; border-radius: 999px;
+      border: 1.5px solid transparent;
+      border-top-color: rgba(234,179,8,0.7);
+      border-right-color: rgba(234,179,8,0.2);
+      animation: arcSpin 3s linear infinite;
+      pointer-events: none;
+    }
+
+    /* ── Stat count-up shimmer ─────────────────────────────── */
+    @keyframes statPop {
+      0%   { opacity: 0; transform: translateY(6px) scale(0.92); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .stat-pop { animation: statPop 480ms var(--ease-premium) both; }
+
+    /* ── Skill card glow on hover ──────────────────────────── */
+    .skill-card {
+      transition: transform 260ms var(--ease-premium), box-shadow 260ms var(--ease-premium), border-color 220ms ease;
+    }
+    .skill-card:hover {
+      box-shadow: 0 0 0 1px rgba(234,179,8,0.28), 0 8px 32px rgba(234,179,8,0.12), 0 18px 50px rgba(0,0,0,0.5) !important;
+      border-color: rgba(234,179,8,0.3) !important;
+    }
+
+    /* ── Progress bar shimmer ──────────────────────────────── */
+    @keyframes barShimmer {
+      0%   { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+    .progress-fill {
+      background: linear-gradient(90deg, #ca8a04 0%, #facc15 40%, #fef08a 55%, #eab308 100%) !important;
+      background-size: 200% auto !important;
+      animation: barShimmer 2.4s linear infinite !important;
+    }
+
+    /* ── Glass card upgraded shadow ───────────────────────── */
+    .glass {
+      box-shadow: 0 1px 3px rgba(0,0,0,0.4), 0 12px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.025) inset, 0 0 0 1px rgba(234,179,8,0.06) inset !important;
+    }
+
+    /* ── Footer upgrade ────────────────────────────────────── */
+    .footer-divider {
+      width: 60px; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(234,179,8,0.4), transparent);
+      margin: 0 auto 1rem;
+    }
+
+    /* ── Summary shell premium border ─────────────────────── */
+    .summary-shell {
+      box-shadow:
+        0 0 0 1px rgba(234,179,8,0.08) inset,
+        0 0 60px rgba(234,179,8,0.04) inset,
+        0 24px 80px rgba(0,0,0,0.65),
+        0 0 0 1px rgba(234,179,8,0.15) !important;
+    }
+
+    /* ── Guardian class card accent line ──────────────────── */
+    .class-accent {
+      height: 2px; border-radius: 99px;
+      background: linear-gradient(90deg, var(--gold), transparent);
+      margin-bottom: 0.6rem;
+      width: 40px;
+    }
+
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+
+    /* ── Cinematic class reveal ─────────────────────────────── */
+    @keyframes classRevealIn {
+      0%   { opacity: 0; transform: scale(0.88) translateY(18px); filter: blur(6px); }
+      60%  { filter: blur(0); }
+      100% { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
+    }
+    @keyframes classRevealOut {
+      0%   { opacity: 1; transform: scale(1) translateY(0); }
+      100% { opacity: 0; transform: scale(1.05) translateY(-14px); }
+    }
+    .class-reveal-screen {
+      position: absolute; inset: 0; z-index: 10;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      background: radial-gradient(ellipse 80% 70% at 50% 50%, rgba(234,179,8,0.13), transparent 68%), rgba(8,8,6,0.97);
+      backdrop-filter: blur(12px);
+      animation: classRevealIn 700ms var(--ease-premium) both;
+    }
+    .class-reveal-screen.exit {
+      animation: classRevealOut 500ms var(--ease-premium) forwards;
+      pointer-events: none;
+    }
+    @keyframes classIconPop {
+      0%   { opacity: 0; transform: scale(0.5); }
+      65%  { transform: scale(1.12); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+    .class-reveal-icon { animation: classIconPop 600ms var(--ease-premium) 200ms both; }
+    @keyframes classNameSlide {
+      from { opacity: 0; transform: translateY(20px); letter-spacing: 0.5em; }
+      to   { opacity: 1; transform: translateY(0); letter-spacing: 0.28em; }
+    }
+    .class-reveal-name { animation: classNameSlide 700ms var(--ease-premium) 380ms both; }
+    @keyframes classTagSlide {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .class-reveal-tag { animation: classTagSlide 600ms var(--ease-premium) 560ms both; }
+    @keyframes classLineExpand {
+      from { width: 0; opacity: 0; }
+      to   { width: 80px; opacity: 1; }
+    }
+    .class-reveal-line { animation: classLineExpand 600ms var(--ease-premium) 440ms both; }
+    @keyframes classRevealPulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(234,179,8,0.45); }
+      50%       { box-shadow: 0 0 0 22px rgba(234,179,8,0); }
+    }
+    .class-reveal-orb { animation: classRevealPulse 2s ease-in-out infinite; }
+
+    /* ── Share button ───────────────────────────────────────── */
+    .btn-share {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      border: 1px solid rgba(234,179,8,0.28);
+      background: rgba(234,179,8,0.07);
+      color: rgba(240,234,214,0.8);
+      font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      border-radius: 99px; padding: 0.45rem 1rem;
+      cursor: pointer; transition: all 220ms var(--ease-premium);
+      font-family: 'Cinzel', serif;
+      position: relative; overflow: hidden;
+    }
+    .btn-share::before {
+      content: ""; position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.08), transparent);
+      opacity: 0; transition: opacity 200ms ease;
+    }
+    .btn-share:hover { border-color: rgba(234,179,8,0.55); background: rgba(234,179,8,0.12); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(234,179,8,0.15); }
+    .btn-share:hover::before { opacity: 1; }
+    .btn-share:active { transform: translateY(0); }
+    .btn-share.copied { border-color: rgba(74,222,128,0.5); background: rgba(74,222,128,0.08); color: rgba(134,239,172,0.9); }
+
+    /* ── Share toast ────────────────────────────────────────── */
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateY(10px) scale(0.95); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    @keyframes toastOut {
+      from { opacity: 1; transform: translateY(0) scale(1); }
+      to   { opacity: 0; transform: translateY(-10px) scale(0.95); }
+    }
+    .share-toast {
+      position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
+      z-index: 999;
+      background: rgba(20,20,16,0.96); border: 1px solid rgba(234,179,8,0.3);
+      border-radius: 99px; padding: 0.65rem 1.4rem;
+      font-size: 0.78rem; font-weight: 600; letter-spacing: 0.1em;
+      color: #fde68a; backdrop-filter: blur(14px);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5), 0 0 0 1px rgba(234,179,8,0.1) inset;
+      animation: toastIn 350ms var(--ease-premium) both;
+      white-space: nowrap;
+    }
+    .share-toast.out { animation: toastOut 300ms var(--ease-premium) forwards; }
+
+    /* ── Rotating scan messages ─────────────────────────────── */
+    @keyframes msgFade {
+      0%   { opacity: 0; transform: translateY(8px); }
+      15%  { opacity: 1; transform: translateY(0); }
+      80%  { opacity: 1; transform: translateY(0); }
+      100% { opacity: 0; transform: translateY(-8px); }
+    }
+    .scan-msg { animation: msgFade 2.6s ease-in-out both; }
+
+    /* ── Social proof chips ─────────────────────────────────── */
+    @keyframes chipIn {
+      from { opacity: 0; transform: translateY(10px) scale(0.92); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .proof-chip {
+      display: inline-flex; align-items: center; gap: 0.45rem;
+      border: 1px solid rgba(234,179,8,0.12);
+      background: rgba(234,179,8,0.04);
+      border-radius: 99px; padding: 0.35rem 0.85rem;
+      font-size: 0.68rem; color: rgba(240,234,214,0.5);
+      letter-spacing: 0.1em;
+      animation: chipIn 700ms var(--ease-premium) both;
+    }
+    .proof-chip-dot { width: 5px; height: 5px; border-radius: 999px; background: var(--gold); opacity: 0.6; }
+
+    /* ── Mobile responsive: result grid ─────────────────────── */
+    .result-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.35fr;
+      gap: 0.75rem;
+      align-items: start;
+    }
+    @media (max-width: 600px) {
+      .result-grid {
+        grid-template-columns: 1fr;
+      }
+      .modal-shell {
+        width: calc(100vw - 12px) !important;
+        max-height: 94vh !important;
+        border-radius: 1.2rem !important;
+      }
+      .skills-grid-inner {
+        grid-template-columns: 1fr !important;
+      }
+    }
+    @media (max-width: 480px) {
+      .summary-topbar { padding: 0.75rem 0.85rem !important; }
+      .summary-stage { padding: 0.65rem !important; }
+    }
+
+    /* ── Hero example handles ───────────────────────────────── */
+    .example-handle {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      border: 1px solid rgba(234,179,8,0.1);
+      background: rgba(234,179,8,0.04);
+      border-radius: 99px; padding: 0.28rem 0.75rem;
+      font-size: 0.7rem; color: rgba(240,234,214,0.45);
+      cursor: pointer; transition: all 180ms ease;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .example-handle:hover {
+      border-color: rgba(234,179,8,0.25); background: rgba(234,179,8,0.08);
+      color: rgba(240,234,214,0.75); transform: translateY(-1px);
+    }
+
+    /* ── Download/export card button ────────────────────────── */
+    .btn-export {
+      display: inline-flex; align-items: center; gap: 0.45rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.04);
+      color: rgba(240,234,214,0.55);
+      font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      border-radius: 99px; padding: 0.4rem 0.9rem;
+      cursor: pointer; transition: all 200ms var(--ease-premium);
+      font-family: 'Cinzel', serif;
+    }
+    .btn-export:hover { border-color: rgba(234,179,8,0.22); background: rgba(234,179,8,0.06); color: rgba(240,234,214,0.8); transform: translateY(-1px); }
+
+    /* ── Improved footer ────────────────────────────────────── */
+    .footer-cta-ring {
+      width: 1px; height: 32px;
+      background: linear-gradient(to bottom, transparent, rgba(234,179,8,0.3), transparent);
+      margin: 0 auto 1.25rem;
     }
   </style>
 </head>
 <body class="selection:bg-yellow-400/25 selection:text-yellow-50">
-
-  <!-- ═══════════════════════════════════════ HEADER -->
+  <div class="grain-overlay" aria-hidden="true"></div>
+  <canvas id="particleCanvas" aria-hidden="true"></canvas>
   <header class="relative-z sticky top-0 z-50 border-b border-yellow-500/10 bg-black/60 backdrop-blur-xl">
     <div class="mx-auto flex max-w-5xl items-center justify-between px-4 py-4 sm:px-6">
       <div class="flex items-center gap-3">
-        <!-- SVG Logo mark -->
-        <svg width="36" height="36" viewBox="0 0 64 64" fill="none" class="text-yellow-400" aria-hidden="true">
-          <path d="M32 8 L50 19 V38 C50 47 42 54 32 57 C22 54 14 47 14 38 V19 Z" stroke="currentColor" stroke-width="2" fill="none" opacity="0.35"/>
-          <path d="M32 14 L44 22 V37 C44 43 38.6 48 32 50.2 C25.4 48 20 43 20 37 V22 Z" stroke="currentColor" stroke-width="2.2" fill="none"/>
-          <line x1="32" y1="14" x2="32" y2="50" stroke="currentColor" stroke-width="1.8"/>
-          <line x1="20" y1="31" x2="44" y2="31" stroke="currentColor" stroke-width="1.8"/>
-        </svg>
+        <img src="Solflare_INSIGNIA_SOL_Yellow.png" alt="Solflare insignia" style="width:36px;height:36px;object-fit:contain;filter:drop-shadow(0 0 8px rgba(234,179,8,0.25))" onerror="this.style.display='none'" />
         <div>
           <p class="display text-sm font-semibold tracking-[0.22em] text-yellow-300/90" style="font-size:0.78rem">SOLFLARE EMPIRE</p>
           <p class="text-yellow-100/35" style="font-size:0.68rem; letter-spacing:0.28em; text-transform:uppercase">Guardian Codex</p>
@@ -251,417 +684,379 @@
     </div>
   </header>
 
-  <!-- ═══════════════════════════════════════ HERO -->
   <section class="relative-z px-4 pb-10 pt-14 text-center sm:px-6 sm:pt-20">
     <div class="mx-auto max-w-3xl">
-      <div class="mb-5 inline-flex items-center gap-2 rounded-full border border-yellow-400/15 bg-yellow-400/6 px-4 py-2 text-xs uppercase tracking-[0.26em] text-yellow-200/70">
-        <span>G4G</span>
-        <span class="h-px w-4 bg-yellow-400/40"></span>
-        <span>Awaken Your Legacy</span>
+      <div class="hero-reveal hero-reveal-1 hero-kicker mb-5 inline-flex items-center gap-2 rounded-full border border-yellow-400/15 bg-yellow-400/6 px-4 py-2 text-xs uppercase tracking-[0.26em] text-yellow-200/70">
+        <span>The Empire Remembers</span><span class="h-px w-4 bg-yellow-400/40"></span><span>Every Guardian Leaves a Signal</span>
       </div>
-      <h1 class="display text-4xl font-bold leading-tight text-yellow-50 sm:text-5xl lg:text-6xl">
-        Guardian<br><span class="text-yellow-400">Codex</span>
-      </h1>
-      <p class="mx-auto mt-5 max-w-xl text-base leading-7 text-yellow-50/60">
-        Enter your X username. Your Guardian profile, Empire class, and strength breakdown will be revealed automatically — pulled directly from your public X identity.
-      </p>
+      <h1 class="hero-reveal hero-reveal-2 display text-4xl font-bold leading-tight text-yellow-50 sm:text-5xl lg:text-6xl">Your Oath<br><span class="hero-title-shine">Is Written</span></h1>
+      <p class="hero-reveal hero-reveal-3 mx-auto mt-5 max-w-xl text-base leading-7 text-yellow-50/55">Before you ever spoke your allegiance, the Empire was already reading you. Every post, every signal, every move — etched into the Codex. Enter your name. What you are will be revealed.</p>
+
+
     </div>
   </section>
 
-  <!-- ═══════════════════════════════════════ SCANNER -->
   <section class="relative-z px-4 pb-12 sm:px-6">
     <div class="mx-auto max-w-xl">
       <div class="glass rounded-2xl p-5 sm:p-7">
-        <label for="usernameInput" class="mb-3 block text-xs font-semibold uppercase tracking-[0.24em] text-yellow-200/55">X Username</label>
+        <label for="usernameInput" class="mb-3 block text-xs font-semibold uppercase tracking-[0.24em] text-yellow-200/55">Speak Your Name, Guardian</label>
         <div class="flex flex-col gap-3 sm:flex-row">
-          <div class="relative flex-1">
+          <div class="input-wrap relative flex-1">
             <span class="absolute left-4 top-1/2 -translate-y-1/2 text-yellow-400/50 font-semibold text-sm select-none">@</span>
-            <input
-              id="usernameInput"
-              type="text"
-              inputmode="text"
-              autocomplete="off"
-              autocorrect="off"
-              autocapitalize="off"
-              spellcheck="false"
-              maxlength="50"
-              placeholder="yourhandle"
-              class="input-field w-full rounded-xl py-4 pl-8 pr-4"
-              style="min-height:52px;"
-            />
+            <input id="usernameInput" type="text" inputmode="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" maxlength="50" placeholder="yourhandle" class="input-field w-full rounded-xl py-4 pl-8 pr-4" style="min-height:52px;" />
           </div>
-          <button id="scanBtn" class="btn-primary rounded-xl px-6 py-4 flex items-center justify-center gap-2" style="min-height:52px; min-width:160px;">
-            <span id="btnIcon">⚔</span>
-            <span id="btnLabel">Scan Guardian</span>
+          <button id="scanBtn" class="btn-oath-like rounded-full px-8 py-4 flex items-center justify-center gap-3" style="min-height:56px; min-width:200px;">
+            <span class="btn-oath-icon">✦</span><span id="btnLabel" class="btn-oath-text">Reveal My Codex</span><span class="btn-oath-icon">★</span>
           </button>
         </div>
+
         <div id="errorBox" class="hidden mt-4"></div>
       </div>
     </div>
   </section>
 
-  <!-- ═══════════════════════════════════════ RESULTS -->
-  <section id="resultsSection" class="relative-z hidden px-4 pb-20 sm:px-6">
-    <div class="mx-auto max-w-5xl space-y-5">
-
-      <!-- Profile Card -->
-      <div id="profileCard" class="glass rounded-[1.5rem] overflow-hidden fade-up">
-        <!-- Banner -->
-        <div id="bannerWrap" class="banner-fallback relative">
-          <img id="bannerImg" src="" alt="" class="banner-img hidden" loading="lazy" />
-          <!-- Scan line overlay during load -->
-          <div id="scanOverlay" class="absolute inset-0 overflow-hidden rounded-t-[1.5rem] hidden">
-            <div class="scan-line"></div>
-          </div>
-          <!-- Gold bottom edge -->
-          <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-yellow-400/40 to-transparent"></div>
-        </div>
-
-        <!-- Profile content -->
-        <div class="p-5 sm:p-7">
-          <div class="flex flex-col gap-5 sm:flex-row sm:items-start">
-            <!-- Avatar -->
-            <div class="-mt-14 shrink-0 sm:-mt-16">
-              <div class="relative inline-block">
-                <div class="absolute inset-0 rounded-full bg-yellow-400/20 blur-2xl"></div>
-                <img id="avatarImg" src="" alt="Guardian avatar" width="96" height="96"
-                  class="relative avatar-ring h-20 w-20 rounded-full object-cover sm:h-24 sm:w-24 bg-yellow-900/30"
-                  loading="lazy" />
-              </div>
-            </div>
-
-            <!-- Name / bio -->
-            <div class="flex-1 min-w-0 pt-1 sm:pt-0">
-              <div class="flex flex-wrap items-center gap-2">
-                <h2 id="profileName" class="display text-2xl font-bold text-yellow-50 sm:text-3xl"></h2>
-                <span id="verifiedBadge" class="hidden items-center gap-1 rounded-full bg-yellow-400/12 px-2 py-0.5 text-xs font-semibold text-yellow-300">
-                  ✦ Verified
-                </span>
-              </div>
-              <p id="profileHandle" class="mt-1 text-sm text-yellow-200/50"></p>
-              <p id="profileBio" class="mt-4 max-w-2xl text-sm leading-7 text-yellow-50/72"></p>
-              <div id="profileMeta" class="mt-3 flex flex-wrap gap-3 text-xs text-yellow-100/40"></div>
+  <div id="modalBackdrop" class="modal-backdrop">
+    <div class="modal-shell">
+      <div class="modal-ghost rounded-[1.6rem] overflow-hidden">
+        <div class="p-5 sm:p-6 border-b border-yellow-500/10 flex items-center justify-between gap-4">
+          <div class="flex items-center gap-4 min-w-0">
+            <img src="Solflare_LOGO_SOL_Yellow.png" alt="Solflare logo" class="h-8 sm:h-10 w-auto object-contain" onerror="this.style.display='none'" />
+            <div class="min-w-0">
+              <p class="display text-sm sm:text-base tracking-[0.22em] text-yellow-300/75 uppercase">Guardian Summary</p>
+              <p id="modalSubline" class="mt-1 text-xs sm:text-sm text-yellow-50/45 truncate">The Codex is awakening...</p>
             </div>
           </div>
-
-          <!-- Stats row -->
-          <div id="statsRow" class="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4"></div>
+          <button id="closeModalBtn" class="rounded-full border border-yellow-500/15 bg-white/5 px-3 py-2 text-xs uppercase tracking-[0.18em] text-yellow-100/70 hover:bg-white/10">Close</button>
         </div>
-      </div>
-
-      <!-- Guardian Class + Strengths -->
-      <div id="strengthSection" class="glass rounded-[1.5rem] p-5 sm:p-7 fade-up delay-2">
-        <div class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <p class="text-xs uppercase tracking-[0.24em] text-yellow-300/45">Guardian Class</p>
-            <h3 id="guardianClass" class="display mt-2 text-3xl font-bold text-yellow-50 sm:text-4xl"></h3>
-            <p id="classDesc" class="mt-2 max-w-xl text-sm leading-7 text-yellow-50/60"></p>
+        <div id="modalBody" class="p-3 sm:p-4 lg:p-5">
+          <div id="loadingState" class="flex min-h-[48vh] items-center justify-center">
+            <div class="flex flex-col items-center justify-center text-center gap-5">
+              <div class="loader-ring flex items-center justify-center">
+                <img src="Solflare_INSIGNIA_SOL_Yellow.png" alt="Solflare insignia" class="loader-insignia" onerror="this.style.display='none'" />
+              </div>
+              <div>
+                <p class="display text-3xl sm:text-4xl text-yellow-50">The Codex Stirs</p>
+                <p id="scanMsg" class="mt-2 text-sm sm:text-base text-yellow-50/55 scan-msg">Reading the public signal...</p>
+              </div>
+            </div>
           </div>
-          <div id="classBadge" class="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl border border-yellow-400/20 bg-yellow-400/8 text-3xl"></div>
-        </div>
-
-        <div class="mb-5">
-          <p class="mb-4 text-xs uppercase tracking-[0.24em] text-yellow-300/45">Strength Breakdown</p>
-          <div id="skillsGrid" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"></div>
+          <div id="resultState" class="hidden summary-stage"></div>
         </div>
       </div>
-
-      <!-- Empire Timestamp -->
-      <div id="timestampCard" class="glass rounded-[1.5rem] p-5 sm:p-7 fade-up delay-4">
-        <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <p class="text-xs uppercase tracking-[0.24em] text-yellow-300/45">Guardian Since</p>
-            <p id="guardianSince" class="display mt-2 text-3xl font-bold text-yellow-400 sm:text-4xl"></p>
-            <p class="mt-2 text-sm text-yellow-50/50">Based on X account creation date — the origin point of your public presence.</p>
-          </div>
-          <div class="text-5xl opacity-20 select-none">⧖</div>
-        </div>
-      </div>
-
     </div>
-  </section>
+  </div>
 
-  <!-- ═══════════════════════════════════════ FOOTER -->
-  <footer class="relative-z border-t border-yellow-500/8 px-4 py-8 text-center sm:px-6">
-    <p class="text-xs uppercase tracking-[0.24em] text-yellow-100/25">Solflare Empire · Guardian Codex · G4G</p>
+  <footer class="relative-z border-t border-yellow-500/8 px-4 py-10 text-center sm:px-6">
+    <div class="footer-cta-ring"></div>
+    <p class="display text-xs tracking-[0.28em] text-yellow-200/40 uppercase mb-3">Solflare Empire · Guardian Codex · G4G</p>
+    <p class="text-xs text-yellow-50/20 tracking-wide mb-5">The Empire does not forget. Every Guardian leaves a signal.</p>
+    <div class="flex items-center justify-center gap-4 flex-wrap">
+      <a href="https://discord.com/invite/solflare" target="_blank" rel="noopener noreferrer" class="text-xs uppercase tracking-[0.18em] text-yellow-100/25 hover:text-yellow-100/50 transition-colors">Join Discord</a>
+      <span class="text-yellow-500/15">·</span>
+      <a href="https://x.com/solflare" target="_blank" rel="noopener noreferrer" class="text-xs uppercase tracking-[0.18em] text-yellow-100/25 hover:text-yellow-100/50 transition-colors">Follow on X</a>
+      <span class="text-yellow-500/15">·</span>
+      <a href="https://x.com/SolflareEmpire" target="_blank" rel="noopener noreferrer" class="text-xs uppercase tracking-[0.18em] text-yellow-100/25 hover:text-yellow-100/50 transition-colors">About G4G</a>
+    </div>
   </footer>
 
   <script>
-    // ─── CONFIG ────────────────────────────────────────────────
     const WORKER_URL = "https://guardian-codex.shamelessson.workers.dev";
-
-    // ─── SKILL LIBRARY ─────────────────────────────────────────
     const SKILLS = [
-      {
-        id: "media",
-        title: "Media Architect",
-        icon: "✦",
-        desc: "Crafts visual gravity through content, design, and creative output.",
-        keywords: ["video","edit","design","visual","motion","graphic","brand","content","creative","ui","ux","film","produc","art","creat","photo","reel","clip","cut","aesthetic"],
-      },
-      {
-        id: "builder",
-        title: "Vision Builder",
-        icon: "⬡",
-        desc: "Shapes ideas into systems, products, and polished executions.",
-        keywords: ["build","product","code","develop","web","app","launch","system","deploy","engineer","tech","software","program","site","stack","repo","github","ship"],
-      },
-      {
-        id: "community",
-        title: "Community Forger",
-        icon: "⚡",
-        desc: "Strengthens trust through connection, support, and ecosystem energy.",
-        keywords: ["communit","space","reply","support","engage","grow","connect","discord","twitter","network","people","collab","help","team","host","mod","dao","tribe"],
-      },
-      {
-        id: "educator",
-        title: "Education Sentinel",
-        icon: "✧",
-        desc: "Transforms complexity into clear guidance, tutorials, and onboarding flows.",
-        keywords: ["educat","teach","guide","tutorial","onboard","explain","thread","tips","learn","write","blog","document","walkthrough","mentor","cours","train"],
-      },
-      {
-        id: "scout",
-        title: "Empire Scout",
-        icon: "◈",
-        desc: "Surfaces early signals, market reads, and key narrative momentum.",
-        keywords: ["alpha","signal","trade","market","research","insight","scout","analy","crypto","nft","defi","solana","web3","blockchain","invest","token","wallet","sol"],
-      },
-      {
-        id: "lore",
-        title: "Lore Keeper",
-        icon: "☉",
-        desc: "Guards voice, story, culture, and symbolic identity across the Empire.",
-        keywords: ["story","lore","culture","narrative","identity","voice","copy","writ","language","brand","poet","creat","imagine","vision","inspire","dream"],
-      },
+      { id: "media", title: "Media Architect", icon: "✦", desc: "Crafts visual gravity through content, design, and creative output.", keywords: ["video","edit","design","visual","motion","graphic","brand","content","creative","ui","ux","film","produc","art","creat","photo","reel","clip","cut","aesthetic"] },
+      { id: "builder", title: "Vision Builder", icon: "⬡", desc: "Shapes ideas into systems, products, and polished executions.", keywords: ["build","product","code","develop","web","app","launch","system","deploy","engineer","tech","software","program","site","stack","repo","github","ship"] },
+      { id: "community", title: "Community Forger", icon: "⚡", desc: "Strengthens trust through connection, support, and ecosystem energy.", keywords: ["communit","space","reply","support","engage","grow","connect","discord","twitter","network","people","collab","help","team","host","mod","dao","tribe"] },
+      { id: "educator", title: "Education Sentinel", icon: "✧", desc: "Transforms complexity into clear guidance, tutorials, and onboarding flows.", keywords: ["educat","teach","guide","tutorial","onboard","explain","thread","tips","learn","write","blog","document","walkthrough","mentor","cours","train"] },
+      { id: "scout", title: "Empire Scout", icon: "◈", desc: "Surfaces early signals, market reads, and key narrative momentum.", keywords: ["alpha","signal","trade","market","research","insight","scout","analy","crypto","nft","defi","solana","web3","blockchain","invest","token","wallet","sol"] },
+      { id: "lore", title: "Lore Keeper", icon: "☉", desc: "Guards voice, story, culture, and symbolic identity across the Empire.", keywords: ["story","lore","culture","narrative","identity","voice","copy","writ","language","brand","poet","creat","imagine","vision","inspire","dream"] }
     ];
-
-    // Guardian class definitions
     const CLASSES = {
-      media:     { name: "Media Architect",     icon: "✦", desc: "Your primary force is creation — you shape the Empire's visual and narrative identity through consistent, high-quality output." },
-      builder:   { name: "Vision Builder",      icon: "⬡", desc: "You translate ideas into reality — building systems, products, and tools that expand the Empire's technical frontier." },
-      community: { name: "Community Forger",    icon: "⚡", desc: "Your energy binds the Empire together — you grow trust, spark conversations, and hold the social fabric strong." },
-      educator:  { name: "Education Sentinel",  icon: "✧", desc: "You make the Empire legible — breaking down complexity so every Guardian can move with clarity and confidence." },
-      scout:     { name: "Empire Scout",        icon: "◈", desc: "You read the field — surfacing signals, calling narratives early, and keeping the Empire ahead of the curve." },
-      lore:      { name: "Lore Keeper",         icon: "☉", desc: "You carry the Empire's memory — preserving voice, culture, and story across every front." },
+      media: { name: "Media Architect", icon: "✦", desc: "Your primary force is creation — you shape the Empire's visual and narrative identity through consistent, high-quality output." },
+      builder: { name: "Vision Builder", icon: "⬡", desc: "You translate ideas into reality — building systems, products, and tools that expand the Empire's technical frontier." },
+      community: { name: "Community Forger", icon: "⚡", desc: "Your energy binds the Empire together — you grow trust, spark conversations, and hold the social fabric strong." },
+      educator: { name: "Education Sentinel", icon: "✧", desc: "You make the Empire legible — breaking down complexity so every Guardian can move with clarity and confidence." },
+      scout: { name: "Empire Scout", icon: "◈", desc: "You read the field — surfacing signals, calling narratives early, and keeping the Empire ahead of the curve." },
+      lore: { name: "Lore Keeper", icon: "☉", desc: "You carry the Empire's memory — preserving voice, culture, and story across every front." }
     };
+    const usernameInput = document.getElementById('usernameInput');
+    const scanBtn = document.getElementById('scanBtn');
+        const btnLabel = document.getElementById('btnLabel');
+    const errorBox = document.getElementById('errorBox');
+    const modalBackdrop = document.getElementById('modalBackdrop');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const modalSubline = document.getElementById('modalSubline');
+    const loadingState = document.getElementById('loadingState');
+    const resultState = document.getElementById('resultState');
+    function fmt(n) { if (!n && n !== 0) return '—'; if (n >= 1_000_000) return (n / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M'; if (n >= 1_000) return (n / 1_000).toFixed(1).replace(/\.0$/, '') + 'K'; return n.toLocaleString(); }
+    function formatDate(iso) { if (!iso) return 'Unknown'; try { return new Date(iso).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }); } catch { return iso; } }
+    function showError(msg) { errorBox.innerHTML = `<div class="error-panel">${msg}</div>`; errorBox.classList.remove('hidden'); }
+    function clearError() { errorBox.innerHTML = ''; errorBox.classList.add('hidden'); }
+    function setScanState(scanning) { scanBtn.disabled = scanning; btnLabel.textContent = scanning ? 'The Codex Reads...' : 'Reveal My Codex'; }
+    function openModal() { modalBackdrop.classList.add('open'); document.body.style.overflow = 'hidden'; }
+    function closeModal() { modalBackdrop.classList.remove('open'); document.body.style.overflow = ''; }
+    function analyzeProfile(bio, name, handle) { const text = ` ${(bio + ' ' + name + ' ' + handle).toLowerCase()} `; const scored = SKILLS.map(skill => { let hits = 0; skill.keywords.forEach(kw => { if (text.includes(kw)) hits++; }); return { skill, hits }; }).sort((a, b) => b.hits - a.hits); const top = scored.filter(s => s.hits > 0); const shown = top.length >= 2 ? top.slice(0, 6) : scored.slice(0, 4); const dominant = shown[0].skill.id; return { skills: shown, dominantId: dominant }; }
+    function buildSkillCard(skill, hits, index) { const level = Math.min(10, Math.max(3, hits * 2 + 3)); const pct = level * 10; const signal = hits >= 4 ? 'High' : hits >= 2 ? 'Clear' : 'Emerging'; const delay = index * 90; return `<div class="skill-card fade-up" style="padding:0.7rem 0.75rem;border-radius:0.75rem;animation-delay:${delay}ms"><div class="flex items-center justify-between gap-2 mb-1.5"><div class="min-w-0"><p style="font-size:0.55rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--faint)">${signal} Signal</p><h4 class="display font-bold text-yellow-50" style="font-size:0.8rem;margin-top:1px;line-height:1.2">${skill.title}</h4></div><div style="width:28px;height:28px;border-radius:8px;border:1px solid rgba(234,179,8,0.16);background:rgba(234,179,8,0.07);display:inline-flex;align-items:center;justify-content:center;font-size:0.8rem;flex-shrink:0">${skill.icon}</div></div><p style="font-size:0.65rem;line-height:1.5;color:var(--muted);margin-bottom:0.5rem">${skill.desc}</p><div class="flex items-center justify-between" style="font-size:0.55rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--faint);margin-bottom:5px"><span>Strength</span><span>${pct}%</span></div><div class="progress-bg" style="height:4px"><div class="progress-fill" style="width:0%" data-target="${pct}%"></div></div></div>`; }
+    function animateProgressBars() { requestAnimationFrame(() => { document.querySelectorAll('.progress-fill[data-target]').forEach(bar => { setTimeout(() => { bar.style.width = bar.dataset.target; }, 120); }); }); }
+    function renderResult(data, username) {
+      const u = data?.data || data?.user || data;
+      if (!u || !u.userName) { showError('Guardian not found. Check the username and try again.'); closeModal(); return; }
+      modalSubline.textContent = `@${u.userName} · ${u.name || u.userName}`;
+      const avatar = u.profilePicture || `https://unavatar.io/x/${u.userName}`;
+      const bio = u.description || u.bio || 'No bio provided.';
+      const stats = [
+        { label: 'Followers', value: fmt(u.followers ?? u.followersCount) },
+        { label: 'Following', value: fmt(u.following ?? u.followingCount) },
+        { label: 'Posts', value: fmt(u.statusesCount ?? u.tweetsCount) },
+        { label: 'Media', value: fmt(u.mediaCount) }
+      ];
+      const metaParts = [];
+      if (u.location) metaParts.push(`📍 ${u.location}`);
+      if (u.website || u.url) metaParts.push(`🔗 ${u.website || u.url}`);
+      const { skills, dominantId } = analyzeProfile(bio, u.name || '', u.userName);
+      const cls = CLASSES[dominantId] || CLASSES.community;
 
-    // ─── DOM REFS ───────────────────────────────────────────────
-    const usernameInput   = document.getElementById("usernameInput");
-    const scanBtn         = document.getElementById("scanBtn");
-    const btnIcon         = document.getElementById("btnIcon");
-    const btnLabel        = document.getElementById("btnLabel");
-    const errorBox        = document.getElementById("errorBox");
-    const resultsSection  = document.getElementById("resultsSection");
-    const bannerImg       = document.getElementById("bannerImg");
-    const bannerWrap      = document.getElementById("bannerWrap");
-    const scanOverlay     = document.getElementById("scanOverlay");
-    const avatarImg       = document.getElementById("avatarImg");
-    const profileName     = document.getElementById("profileName");
-    const profileHandle   = document.getElementById("profileHandle");
-    const profileBio      = document.getElementById("profileBio");
-    const profileMeta     = document.getElementById("profileMeta");
-    const verifiedBadge   = document.getElementById("verifiedBadge");
-    const statsRow        = document.getElementById("statsRow");
-    const guardianClass   = document.getElementById("guardianClass");
-    const classDesc       = document.getElementById("classDesc");
-    const classBadge      = document.getElementById("classBadge");
-    const skillsGrid      = document.getElementById("skillsGrid");
-    const guardianSince   = document.getElementById("guardianSince");
-
-    // ─── UTILITIES ──────────────────────────────────────────────
-    function fmt(n) {
-      if (!n && n !== 0) return "—";
-      if (n >= 1_000_000) return (n / 1_000_000).toFixed(1).replace(/\.0$/, "") + "M";
-      if (n >= 1_000)     return (n / 1_000).toFixed(1).replace(/\.0$/, "") + "K";
-      return n.toLocaleString();
-    }
-
-    function formatDate(iso) {
-      if (!iso) return "Unknown";
-      try {
-        return new Date(iso).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
-      } catch { return iso; }
-    }
-
-    function showError(msg) {
-      errorBox.innerHTML = `<div class="error-panel">${msg}</div>`;
-      errorBox.classList.remove("hidden");
-    }
-
-    function clearError() {
-      errorBox.innerHTML = "";
-      errorBox.classList.add("hidden");
-    }
-
-    function setScanState(scanning) {
-      scanBtn.disabled = scanning;
-      if (scanning) {
-        btnIcon.innerHTML = `<span class="spinner"></span>`;
-        btnLabel.textContent = "Scanning...";
-        scanOverlay.classList.remove("hidden");
-      } else {
-        btnIcon.textContent = "⚔";
-        btnLabel.textContent = "Scan Guardian";
-        scanOverlay.classList.add("hidden");
-      }
-    }
-
-    // ─── ANALYSIS ENGINE ────────────────────────────────────────
-    function analyzeProfile(bio, name, handle) {
-      const text = ` ${(bio + " " + name + " " + handle).toLowerCase()} `;
-      const scored = SKILLS.map(skill => {
-        let hits = 0;
-        skill.keywords.forEach(kw => { if (text.includes(kw)) hits++; });
-        return { skill, hits };
-      }).sort((a, b) => b.hits - a.hits);
-
-      // Ensure at least some skills show up even with sparse bios
-      const top = scored.filter(s => s.hits > 0);
-      const shown = top.length >= 2 ? top.slice(0, 6) : scored.slice(0, 4);
-      const dominant = shown[0].skill.id;
-
-      return { skills: shown, dominantId: dominant };
-    }
-
-    function buildSkillCard(skill, hits, index) {
-      const maxHits = 8;
-      const rawLevel = Math.min(10, Math.max(3, hits * 2 + 3));
-      const pct = rawLevel * 10;
-      const signal = hits >= 4 ? "High Signal" : hits >= 2 ? "Clear Signal" : "Emerging Signal";
-      const delay = index * 80;
-
-      return `
-        <div class="skill-card fade-up" style="animation-delay:${delay}ms">
-          <div class="flex items-start justify-between gap-3 mb-3">
-            <div>
-              <p style="font-size:0.65rem; letter-spacing:0.22em; text-transform:uppercase; color:var(--faint)">${signal}</p>
-              <h4 class="display mt-1 text-lg font-bold text-yellow-50">${skill.title}</h4>
+      const profileHTML = `
+        <div class="summary-shell" style="position:relative;overflow:hidden">
+          <!-- Cinematic class reveal overlay -->
+          <div id="classRevealScreen" class="class-reveal-screen" aria-hidden="true">
+            <div class="class-reveal-orb" style="width:90px;height:90px;border-radius:999px;border:1.5px solid rgba(234,179,8,0.4);background:radial-gradient(circle,rgba(234,179,8,0.18),transparent 65%);display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem">
+              <span class="class-reveal-icon" style="font-size:2.4rem">${cls.icon}</span>
             </div>
-            <div style="width:40px;height:40px;border-radius:12px;border:1px solid rgba(234,179,8,0.16);background:rgba(234,179,8,0.07);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0">${skill.icon}</div>
+            <div class="class-reveal-line" style="height:1px;background:linear-gradient(90deg,transparent,rgba(234,179,8,0.6),transparent);margin:0 auto 1.2rem"></div>
+            <p class="display class-reveal-name" style="font-size:clamp(0.9rem,4vw,1.5rem);font-weight:700;letter-spacing:0.28em;color:#fde68a;text-transform:uppercase;text-align:center;padding:0 1.5rem">${cls.name}</p>
+            <p class="class-reveal-tag" style="font-size:0.72rem;color:rgba(234,179,8,0.5);letter-spacing:0.22em;text-transform:uppercase;margin-top:0.6rem">Guardian Class Identified</p>
           </div>
-          <p style="font-size:0.8rem;line-height:1.65;color:var(--muted);margin-bottom:0.875rem">${skill.desc}</p>
-          <div class="flex items-center justify-between mb-2" style="font-size:0.7rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--faint)">
-            <span>Level ${rawLevel}</span>
-            <span>${pct} Power</span>
-          </div>
-          <div class="progress-bg" style="height:6px">
-            <div class="progress-fill" style="width:0%" data-target="${pct}%"></div>
-          </div>
-        </div>
-      `;
-    }
 
-    function animateProgressBars() {
-      requestAnimationFrame(() => {
-        document.querySelectorAll(".progress-fill[data-target]").forEach(bar => {
-          setTimeout(() => {
-            bar.style.width = bar.dataset.target;
-          }, 100);
+          <div class="summary-topbar">
+            <div class="flex items-center gap-2 min-w-0">
+              <span class="inline-flex h-6 w-6 items-center justify-center rounded-full border border-yellow-500/15 bg-yellow-400/10 text-yellow-200/90" style="font-size:0.72rem">☉</span>
+              <div class="min-w-0">
+                <p class="display text-xs tracking-[0.22em] text-yellow-300/75 uppercase">Guardian Summary</p>
+                <p class="text-xs text-yellow-50/40 truncate">@${u.userName} · ${u.name || u.userName}</p>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="p-3 sm:p-4 summary-stage">
+            <div class="result-grid">
+
+              <!-- LEFT: Identity -->
+              <div style="display:flex;flex-direction:column;gap:0.6rem">
+                <div class="summary-card" style="padding:0.85rem">
+                  ${u.coverPicture ? `<div style="border-radius:0.6rem;overflow:hidden;margin-bottom:0.6rem;border:1px solid rgba(234,179,8,0.1);background:#0a0800"><img src="${u.coverPicture}" alt="banner" style="width:100%;height:auto;display:block;filter:saturate(0.9) brightness(0.85)" onerror="this.parentElement.style.display=&apos;none&apos;" /></div>` : ''}
+                  <div class="flex items-center gap-3" style="margin-bottom:0.6rem">
+                    <div class="relative" style="flex-shrink:0">
+                      <div class="absolute inset-0 rounded-full bg-yellow-400/20 blur-lg"></div>
+                      <div class="avatar-arc"></div>
+                      <img src="${avatar}" alt="Avatar" class="relative avatar-ring" style="width:50px;height:50px;border-radius:999px;object-fit:cover;background:#1a1200" loading="lazy" />
+                    </div>
+                    <div class="min-w-0">
+                      <div class="flex flex-wrap items-center gap-1" style="margin-bottom:1px">
+                        <h2 class="display font-bold text-yellow-50" style="font-size:0.95rem;line-height:1.2">${u.name || u.userName}</h2>
+                        ${u.isBlueVerified || u.verified ? '<span style="font-size:0.6rem;padding:1px 6px;border-radius:99px;border:1px solid rgba(234,179,8,0.2);background:rgba(234,179,8,0.1);color:#fde68a;font-weight:600">✦ Verified</span>' : ''}
+                      </div>
+                      <p style="font-size:0.68rem;color:var(--muted)">@${u.userName}</p>
+                      ${metaParts.length ? `<p style="font-size:0.65rem;color:var(--faint);margin-top:3px;line-height:1.4">${metaParts.join(' · ')}</p>` : ''}
+                    </div>
+                  </div>
+                  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0.35rem;margin-bottom:0.6rem">
+                    ${stats.map((s,i) => `<div class="stat-pop" style="text-align:center;padding:5px 3px;border-radius:7px;border:1px solid rgba(234,179,8,0.1);background:rgba(234,179,8,0.03);animation-delay:${i*80+200}ms"><p style="font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--faint);margin-bottom:2px">${s.label}</p><p style="font-size:0.82rem;font-weight:700;color:var(--text);line-height:1">${s.value}</p></div>`).join('')}
+                  </div>
+                  <div style="border-radius:0.55rem;border:1px solid rgba(234,179,8,0.1);background:rgba(234,179,8,0.03);padding:0.5rem 0.65rem">
+                    <p class="display" style="font-size:0.7rem;line-height:1.55;color:rgba(240,234,214,0.65)">"${bio.replace(/"/g, '&quot;')}"</p>
+                  </div>
+                </div>
+
+                <div class="glass" style="border-radius:0.85rem;padding:0.85rem">
+                  <p style="font-size:0.57rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--faint);margin-bottom:0.4rem">Guardian Class</p>
+                  <div class="class-accent"></div>
+                  <div class="flex items-center gap-2" style="margin-bottom:0.35rem">
+                    <span style="font-size:1rem">${cls.icon}</span>
+                    <h3 class="display font-bold text-yellow-50" style="font-size:0.9rem">${cls.name}</h3>
+                  </div>
+                  <p style="font-size:0.68rem;line-height:1.55;color:rgba(240,234,214,0.5)">${cls.desc}</p>
+                  <div style="display:flex;flex-wrap:wrap;gap:0.3rem;margin-top:0.55rem">
+                    ${skills.slice(0,4).map(s => `<span style="display:inline-flex;align-items:center;gap:4px;border-radius:99px;border:1px solid rgba(234,179,8,0.12);background:rgba(255,255,255,0.04);padding:2px 8px;font-size:0.62rem;color:rgba(240,234,214,0.55)"><span>${s.skill.icon}</span><span>${s.skill.title}</span></span>`).join('')}
+                  </div>
+                </div>
+              </div>
+
+              <!-- RIGHT: Skill Breakdown -->
+              <div class="glass" style="border-radius:0.85rem;padding:0.85rem">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.55rem">
+                  <p style="font-size:0.57rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--faint)">Strength Breakdown</p>
+                  <span style="font-size:0.6rem;padding:1px 7px;border-radius:99px;border:1px solid rgba(234,179,8,0.15);background:rgba(234,179,8,0.06);color:rgba(234,179,8,0.6)">${skills.length} signals</span>
+                </div>
+                <div id="skillsGridModal" class="skills-grid-inner" style="display:grid;grid-template-columns:1fr 1fr;gap:0.45rem">
+                  ${skills.map((s,i) => buildSkillCard(s.skill, s.hits, i)).join('')}
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>`;
+
+      resultState.innerHTML = profileHTML;
+      loadingState.classList.add('hidden');
+      resultState.classList.remove('hidden');
+      stopScanMessages();
+      triggerClassReveal(() => {
+        animateProgressBars();
+        setTimeout(runCountUps, 80);
+      });
+    }
+    async function doScan() { clearError(); const raw = usernameInput.value.trim().replace(/^@/, ''); if (!raw) { showError('Please enter an X username.'); return; } setScanState(true); modalSubline.textContent = `@${raw} · the Codex awakens`; openModal(); loadingState.classList.remove('hidden'); resultState.classList.add('hidden'); startScanMessages(); try { const res = await fetch(`${WORKER_URL}?username=${encodeURIComponent(raw)}`); if (!res.ok) throw new Error(`Server returned ${res.status}`); const data = await res.json(); if (data.error) throw new Error(data.error); renderResult(data, raw); } catch (err) { stopScanMessages(); loadingState.classList.add('hidden'); resultState.classList.remove('hidden'); resultState.innerHTML = `<div class="error-panel">Could not load profile: ${err.message}. Make sure the username is correct and try again.</div>`; } finally { setScanState(false); } }
+
+    // ── Particle field ───────────────────────────────────────────────────────
+    (function() {
+      const canvas = document.getElementById('particleCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let W, H, particles = [];
+      const COUNT = 55;
+      function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+      resize();
+      window.addEventListener('resize', resize);
+      for (let i = 0; i < COUNT; i++) {
+        particles.push({
+          x: Math.random() * window.innerWidth,
+          y: Math.random() * window.innerHeight,
+          r: Math.random() * 1.1 + 0.3,
+          vx: (Math.random() - 0.5) * 0.18,
+          vy: (Math.random() - 0.5) * 0.18,
+          o: Math.random() * 0.45 + 0.08,
+          pulse: Math.random() * Math.PI * 2
         });
+      }
+      function draw() {
+        ctx.clearRect(0, 0, W, H);
+        const t = Date.now() / 1000;
+        particles.forEach(p => {
+          p.x += p.vx; p.y += p.vy; p.pulse += 0.012;
+          if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
+          if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
+          const opacity = p.o * (0.6 + 0.4 * Math.sin(p.pulse));
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(234,179,8,${opacity})`;
+          ctx.fill();
+        });
+        requestAnimationFrame(draw);
+      }
+      draw();
+    })();
+
+    // ── Count-up for stats ───────────────────────────────────────────────────
+    function countUp(el, target) {
+      if (isNaN(target) || target === 0) return;
+      const dur = 900, start = Date.now();
+      const suffix = el.textContent.replace(/[\d.]/g,'');
+      const step = () => {
+        const p = Math.min(1, (Date.now() - start) / dur);
+        const ease = 1 - Math.pow(1 - p, 3);
+        const val = Math.round(ease * target);
+        el.textContent = val.toLocaleString() + suffix;
+        if (p < 1) requestAnimationFrame(step);
+        else el.textContent = el.dataset.final;
+      };
+      requestAnimationFrame(step);
+    }
+    function runCountUps() {
+      document.querySelectorAll('.stat-pop p:last-child').forEach(el => {
+        const raw = el.textContent;
+        let num = parseFloat(raw.replace(/[KM,]/g,''));
+        if (raw.includes('K')) num *= 1000;
+        if (raw.includes('M')) num *= 1_000_000;
+        el.dataset.final = raw;
+        if (!isNaN(num) && num > 0) setTimeout(() => countUp(el, num), 300);
       });
     }
 
-    // ─── RENDER PROFILE ─────────────────────────────────────────
-    function renderProfile(data) {
-      // twitterapi.io wraps in data.data or returns flat — handle both
-      const u = data?.data || data?.user || data;
-      if (!u || !u.userName) {
-        showError("Guardian not found. Check the username and try again.");
-        return;
-      }
+    // ── Rotating scan messages ───────────────────────────────────────────────
+    const SCAN_MESSAGES = [
+      "The Codex stirs. Your signal is being read...",
+      "Tracing the oath markers across the Empire...",
+      "Your strengths are surfacing from the noise...",
+      "The Council is determining your class...",
+      "Ancient records are being cross-referenced...",
+      "The seal is being forged. Stand by, Guardian..."
+    ];
+    let scanMsgIndex = 0, scanMsgInterval = null;
+    function startScanMessages() {
+      const el = document.getElementById('scanMsg');
+      if (!el) return;
+      scanMsgIndex = 0;
+      el.textContent = SCAN_MESSAGES[0];
+      el.classList.remove('scan-msg');
+      void el.offsetWidth;
+      el.classList.add('scan-msg');
+      scanMsgInterval = setInterval(() => {
+        scanMsgIndex = (scanMsgIndex + 1) % SCAN_MESSAGES.length;
+        el.classList.remove('scan-msg');
+        void el.offsetWidth;
+        el.classList.add('scan-msg');
+        el.textContent = SCAN_MESSAGES[scanMsgIndex];
+      }, 2400);
+    }
+    function stopScanMessages() {
+      if (scanMsgInterval) { clearInterval(scanMsgInterval); scanMsgInterval = null; }
+    }
 
-      // Avatar
-      avatarImg.src = u.profilePicture || `https://unavatar.io/x/${u.userName}`;
-      avatarImg.alt = `${u.name || u.userName} avatar`;
-
-      // Banner
-      if (u.coverPicture) {
-        bannerImg.src = u.coverPicture;
-        bannerImg.onload = () => {
-          bannerImg.classList.remove("hidden");
-          bannerWrap.classList.add("hidden-fallback");
-        };
-      }
-
-      // Name, handle, verified
-      profileName.textContent = u.name || u.userName;
-      profileHandle.textContent = `@${u.userName}`;
-      if (u.isBlueVerified || u.verified) {
-        verifiedBadge.classList.remove("hidden");
-        verifiedBadge.classList.add("inline-flex");
-      }
-
-      // Bio
-      profileBio.textContent = u.description || u.bio || "No bio provided.";
-
-      // Meta (location, website, joined)
-      const metaParts = [];
-      if (u.location)   metaParts.push(`📍 ${u.location}`);
-      if (u.createdAt)  metaParts.push(`🗓 Joined ${formatDate(u.createdAt)}`);
-      if (u.website || u.url) metaParts.push(`🔗 ${u.website || u.url}`);
-      profileMeta.innerHTML = metaParts.map(p => `<span>${p}</span>`).join('<span class="text-yellow-400/20">·</span>');
-
-      // Stats
-      const stats = [
-        { label: "Followers",  value: fmt(u.followers       ?? u.followersCount)  },
-        { label: "Following",  value: fmt(u.following       ?? u.followingCount)  },
-        { label: "Posts",      value: fmt(u.statusesCount   ?? u.tweetsCount)     },
-        { label: "Media",      value: fmt(u.mediaCount)                           },
-      ];
-      statsRow.innerHTML = stats.map(s => `
-        <div class="stat-chip">
-          <p style="font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--faint);margin-bottom:0.4rem">${s.label}</p>
-          <p style="font-size:1.25rem;font-weight:700;color:var(--text)">${s.value}</p>
-        </div>
-      `).join("");
-
-      // Analysis
-      const bioText = u.description || u.bio || "";
-      const { skills, dominantId } = analyzeProfile(bioText, u.name || "", u.userName);
-      const cls = CLASSES[dominantId] || CLASSES.community;
-      guardianClass.textContent = cls.name;
-      classDesc.textContent     = cls.desc;
-      classBadge.textContent    = cls.icon;
-
-      skillsGrid.innerHTML = skills.map((s, i) => buildSkillCard(s.skill, s.hits, i)).join("");
-      animateProgressBars();
-
-      // Guardian since
-      guardianSince.textContent = u.createdAt ? formatDate(u.createdAt) : "Unknown";
-
-      // Show results
-      resultsSection.classList.remove("hidden");
+    // ── Cinematic class reveal ───────────────────────────────────────────────
+    function triggerClassReveal(callback) {
+      const screen = document.getElementById('classRevealScreen');
+      if (!screen) { callback(); return; }
+      screen.style.display = 'flex';
       setTimeout(() => {
-        resultsSection.scrollIntoView({ behavior: "smooth", block: "start" });
-      }, 120);
+        screen.classList.add('exit');
+        setTimeout(() => {
+          screen.style.display = 'none';
+          callback();
+        }, 520);
+      }, 2600);
     }
 
-    // ─── SCAN HANDLER ───────────────────────────────────────────
-    async function doScan() {
-      clearError();
-      const raw = usernameInput.value.trim().replace(/^@/, "");
-      if (!raw) { showError("Please enter an X username."); return; }
-
-      setScanState(true);
-      resultsSection.classList.add("hidden");
-
-      try {
-        const res = await fetch(`${WORKER_URL}?username=${encodeURIComponent(raw)}`);
-        if (!res.ok) throw new Error(`Server returned ${res.status}`);
-        const data = await res.json();
-        if (data.error) throw new Error(data.error);
-        renderProfile(data);
-      } catch (err) {
-        showError(`Could not load profile: ${err.message}. Make sure the username is correct and try again.`);
-      } finally {
-        setScanState(false);
+    // ── Share Codex ─────────────────────────────────────────────────────────
+    function shareCodex(username) {
+      const url = `${window.location.origin}${window.location.pathname}?u=${encodeURIComponent(username)}`;
+      const shareText = `I just revealed my Guardian Codex on Solflare Empire ✦\n\nDiscover your Guardian class: ${url}`;
+      if (navigator.share) {
+        navigator.share({ title: 'Guardian Codex — Solflare Empire', text: shareText, url }).catch(() => {});
+      } else {
+        navigator.clipboard.writeText(url).then(() => {
+          showShareToast('Link copied to clipboard ✦');
+          const btn = document.getElementById('shareBtn');
+          if (btn) { btn.classList.add('copied'); btn.textContent = '✓ Copied'; setTimeout(() => { btn.classList.remove('copied'); btn.innerHTML = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg> Share Codex'; }, 2200); }
+        }).catch(() => {
+          showShareToast('Copy this URL: ' + url);
+        });
       }
     }
+    function showShareToast(msg) {
+      const existing = document.querySelector('.share-toast');
+      if (existing) existing.remove();
+      const toast = document.createElement('div');
+      toast.className = 'share-toast';
+      toast.textContent = msg;
+      document.body.appendChild(toast);
+      setTimeout(() => {
+        toast.classList.add('out');
+        setTimeout(() => toast.remove(), 320);
+      }, 2800);
+    }
 
-    scanBtn.addEventListener("click", doScan);
-    usernameInput.addEventListener("keydown", e => { if (e.key === "Enter") doScan(); });
+    // ── Pre-fill username from URL param ────────────────────────────────────
+    (function() {
+      const params = new URLSearchParams(window.location.search);
+      const u = params.get('u');
+      if (u) { document.getElementById('usernameInput').value = u; }
+    })();
+
+    scanBtn.addEventListener('click', doScan);
+    usernameInput.addEventListener('keydown', e => { if (e.key === 'Enter') doScan(); });
+    closeModalBtn.addEventListener('click', closeModal);
+    modalBackdrop.addEventListener('click', e => { if (e.target === modalBackdrop) closeModal(); });
+    window.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
   </script>
-
 </body>
 </html>
