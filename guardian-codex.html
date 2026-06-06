@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Solflare Empire — Guardian Codex</title>
+  <meta name="description" content="Enter your X username to reveal your Guardian profile, strengths, skills, and Empire class." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Cinzel:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold: #eab308;
+      --gold-bright: #facc15;
+      --gold-dim: rgba(234,179,8,0.12);
+      --panel-border: rgba(234,179,8,0.15);
+      --text: #f0ead6;
+      --muted: #a89f77;
+      --faint: #6b6547;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      background: #060606;
+      overflow-x: hidden;
+    }
+
+    /* Ambient background */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background:
+        radial-gradient(ellipse 70% 45% at 50% 0%, rgba(234,179,8,0.13) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 30% at 10% 60%, rgba(234,179,8,0.05) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 30% at 90% 80%, rgba(234,179,8,0.04) 0%, transparent 60%);
+    }
+
+    /* Grid overlay */
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 40px 40px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 40%, black 30%, transparent 100%);
+    }
+
+    .display { font-family: 'Cinzel', serif; }
+    .relative-z { position: relative; z-index: 1; }
+
+    /* Glass panel */
+    .glass {
+      background: linear-gradient(160deg, rgba(20,19,16,0.92), rgba(12,12,10,0.96));
+      border: 1px solid var(--panel-border);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.4), 0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.03) inset;
+    }
+
+    .card-subtle {
+      background: rgba(255,255,255,0.025);
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    /* Gold button */
+    .btn-primary {
+      background: linear-gradient(135deg, #fde047 0%, #eab308 50%, #ca8a04 100%);
+      color: #0a0800;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(234,179,8,0.3), inset 0 1px 0 rgba(255,255,255,0.35);
+      transition: transform 180ms cubic-bezier(0.16,1,0.3,1), box-shadow 180ms cubic-bezier(0.16,1,0.3,1), filter 180ms ease;
+    }
+    .btn-primary:hover { transform: translateY(-2px); filter: brightness(1.05); box-shadow: 0 14px 32px rgba(234,179,8,0.38), inset 0 1px 0 rgba(255,255,255,0.35); }
+    .btn-primary:active { transform: translateY(0); }
+    .btn-primary:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+
+    /* Input */
+    .input-field {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(234,179,8,0.16);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      transition: border-color 180ms ease, box-shadow 180ms ease;
+      outline: none;
+    }
+    .input-field::placeholder { color: var(--faint); }
+    .input-field:focus {
+      border-color: rgba(234,179,8,0.45);
+      box-shadow: 0 0 0 3px rgba(234,179,8,0.08);
+    }
+
+    /* Stat chip */
+    .stat-chip {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 1rem;
+      padding: 0.75rem 1.25rem;
+      text-align: center;
+    }
+
+    /* Skill card */
+    .skill-card {
+      background: linear-gradient(160deg, rgba(234,179,8,0.08), rgba(234,179,8,0.02) 60%, rgba(10,10,10,0.6));
+      border: 1px solid rgba(234,179,8,0.14);
+      border-radius: 1.25rem;
+      padding: 1.25rem;
+      position: relative;
+      overflow: hidden;
+      transition: transform 200ms ease, box-shadow 200ms ease;
+    }
+    .skill-card:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(0,0,0,0.4); }
+    .skill-card::after {
+      content: "";
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(234,179,8,0.5), transparent);
+    }
+
+    /* Progress bar */
+    .progress-bg { background: rgba(255,255,255,0.06); border-radius: 99px; overflow: hidden; }
+    .progress-fill {
+      height: 100%;
+      border-radius: 99px;
+      background: linear-gradient(90deg, #facc15, #eab308);
+      box-shadow: 0 0 14px rgba(234,179,8,0.4);
+      transition: width 900ms cubic-bezier(0.16,1,0.3,1);
+    }
+
+    /* Scan animation */
+    @keyframes scanLine {
+      0% { transform: translateY(-100%); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(500%); opacity: 0; }
+    }
+    .scan-line {
+      position: absolute;
+      left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(234,179,8,0.8), transparent);
+      animation: scanLine 1.8s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    /* Spinner */
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spinner {
+      width: 18px; height: 18px;
+      border: 2px solid rgba(0,0,0,0.2);
+      border-top-color: #000;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      display: inline-block;
+    }
+
+    /* Fade in up */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up { animation: fadeUp 600ms cubic-bezier(0.16,1,0.3,1) both; }
+    .delay-1 { animation-delay: 80ms; }
+    .delay-2 { animation-delay: 160ms; }
+    .delay-3 { animation-delay: 240ms; }
+    .delay-4 { animation-delay: 320ms; }
+    .delay-5 { animation-delay: 400ms; }
+
+    /* Pulse dot */
+    @keyframes pulseDot {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(234,179,8,0.5); }
+      50%       { box-shadow: 0 0 0 6px rgba(234,179,8,0); }
+    }
+    .pulse-dot { animation: pulseDot 2s ease-in-out infinite; }
+
+    /* Banner */
+    .banner-img {
+      width: 100%; height: 120px;
+      object-fit: cover;
+      border-radius: 1.25rem 1.25rem 0 0;
+    }
+    .banner-fallback {
+      width: 100%; height: 120px;
+      background: linear-gradient(135deg, #1a1500, #0d0d00, #111100);
+      border-radius: 1.25rem 1.25rem 0 0;
+      border-bottom: 1px solid rgba(234,179,8,0.1);
+    }
+
+    /* Avatar ring */
+    .avatar-ring {
+      border: 3px solid rgba(234,179,8,0.5);
+      box-shadow: 0 0 0 3px rgba(234,179,8,0.1), 0 0 24px rgba(234,179,8,0.2);
+    }
+
+    /* Error state */
+    .error-panel {
+      background: rgba(239,68,68,0.06);
+      border: 1px solid rgba(239,68,68,0.2);
+      border-radius: 1rem;
+      padding: 1rem 1.25rem;
+      color: #fca5a5;
+      font-size: 0.875rem;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body class="selection:bg-yellow-400/25 selection:text-yellow-50">
+
+  <!-- ═══════════════════════════════════════ HEADER -->
+  <header class="relative-z sticky top-0 z-50 border-b border-yellow-500/10 bg-black/60 backdrop-blur-xl">
+    <div class="mx-auto flex max-w-5xl items-center justify-between px-4 py-4 sm:px-6">
+      <div class="flex items-center gap-3">
+        <!-- SVG Logo mark -->
+        <svg width="36" height="36" viewBox="0 0 64 64" fill="none" class="text-yellow-400" aria-hidden="true">
+          <path d="M32 8 L50 19 V38 C50 47 42 54 32 57 C22 54 14 47 14 38 V19 Z" stroke="currentColor" stroke-width="2" fill="none" opacity="0.35"/>
+          <path d="M32 14 L44 22 V37 C44 43 38.6 48 32 50.2 C25.4 48 20 43 20 37 V22 Z" stroke="currentColor" stroke-width="2.2" fill="none"/>
+          <line x1="32" y1="14" x2="32" y2="50" stroke="currentColor" stroke-width="1.8"/>
+          <line x1="20" y1="31" x2="44" y2="31" stroke="currentColor" stroke-width="1.8"/>
+        </svg>
+        <div>
+          <p class="display text-sm font-semibold tracking-[0.22em] text-yellow-300/90" style="font-size:0.78rem">SOLFLARE EMPIRE</p>
+          <p class="text-yellow-100/35" style="font-size:0.68rem; letter-spacing:0.28em; text-transform:uppercase">Guardian Codex</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="pulse-dot h-2 w-2 rounded-full bg-yellow-400"></span>
+        <span class="text-xs uppercase tracking-widest text-yellow-100/40">Live</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════════ HERO -->
+  <section class="relative-z px-4 pb-10 pt-14 text-center sm:px-6 sm:pt-20">
+    <div class="mx-auto max-w-3xl">
+      <div class="mb-5 inline-flex items-center gap-2 rounded-full border border-yellow-400/15 bg-yellow-400/6 px-4 py-2 text-xs uppercase tracking-[0.26em] text-yellow-200/70">
+        <span>G4G</span>
+        <span class="h-px w-4 bg-yellow-400/40"></span>
+        <span>Awaken Your Legacy</span>
+      </div>
+      <h1 class="display text-4xl font-bold leading-tight text-yellow-50 sm:text-5xl lg:text-6xl">
+        Guardian<br><span class="text-yellow-400">Codex</span>
+      </h1>
+      <p class="mx-auto mt-5 max-w-xl text-base leading-7 text-yellow-50/60">
+        Enter your X username. Your Guardian profile, Empire class, and strength breakdown will be revealed automatically — pulled directly from your public X identity.
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════ SCANNER -->
+  <section class="relative-z px-4 pb-12 sm:px-6">
+    <div class="mx-auto max-w-xl">
+      <div class="glass rounded-2xl p-5 sm:p-7">
+        <label for="usernameInput" class="mb-3 block text-xs font-semibold uppercase tracking-[0.24em] text-yellow-200/55">X Username</label>
+        <div class="flex flex-col gap-3 sm:flex-row">
+          <div class="relative flex-1">
+            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-yellow-400/50 font-semibold text-sm select-none">@</span>
+            <input
+              id="usernameInput"
+              type="text"
+              inputmode="text"
+              autocomplete="off"
+              autocorrect="off"
+              autocapitalize="off"
+              spellcheck="false"
+              maxlength="50"
+              placeholder="yourhandle"
+              class="input-field w-full rounded-xl py-4 pl-8 pr-4"
+              style="min-height:52px;"
+            />
+          </div>
+          <button id="scanBtn" class="btn-primary rounded-xl px-6 py-4 flex items-center justify-center gap-2" style="min-height:52px; min-width:160px;">
+            <span id="btnIcon">⚔</span>
+            <span id="btnLabel">Scan Guardian</span>
+          </button>
+        </div>
+        <div id="errorBox" class="hidden mt-4"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════ RESULTS -->
+  <section id="resultsSection" class="relative-z hidden px-4 pb-20 sm:px-6">
+    <div class="mx-auto max-w-5xl space-y-5">
+
+      <!-- Profile Card -->
+      <div id="profileCard" class="glass rounded-[1.5rem] overflow-hidden fade-up">
+        <!-- Banner -->
+        <div id="bannerWrap" class="banner-fallback relative">
+          <img id="bannerImg" src="" alt="" class="banner-img hidden" loading="lazy" />
+          <!-- Scan line overlay during load -->
+          <div id="scanOverlay" class="absolute inset-0 overflow-hidden rounded-t-[1.5rem] hidden">
+            <div class="scan-line"></div>
+          </div>
+          <!-- Gold bottom edge -->
+          <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-yellow-400/40 to-transparent"></div>
+        </div>
+
+        <!-- Profile content -->
+        <div class="p-5 sm:p-7">
+          <div class="flex flex-col gap-5 sm:flex-row sm:items-start">
+            <!-- Avatar -->
+            <div class="-mt-14 shrink-0 sm:-mt-16">
+              <div class="relative inline-block">
+                <div class="absolute inset-0 rounded-full bg-yellow-400/20 blur-2xl"></div>
+                <img id="avatarImg" src="" alt="Guardian avatar" width="96" height="96"
+                  class="relative avatar-ring h-20 w-20 rounded-full object-cover sm:h-24 sm:w-24 bg-yellow-900/30"
+                  loading="lazy" />
+              </div>
+            </div>
+
+            <!-- Name / bio -->
+            <div class="flex-1 min-w-0 pt-1 sm:pt-0">
+              <div class="flex flex-wrap items-center gap-2">
+                <h2 id="profileName" class="display text-2xl font-bold text-yellow-50 sm:text-3xl"></h2>
+                <span id="verifiedBadge" class="hidden items-center gap-1 rounded-full bg-yellow-400/12 px-2 py-0.5 text-xs font-semibold text-yellow-300">
+                  ✦ Verified
+                </span>
+              </div>
+              <p id="profileHandle" class="mt-1 text-sm text-yellow-200/50"></p>
+              <p id="profileBio" class="mt-4 max-w-2xl text-sm leading-7 text-yellow-50/72"></p>
+              <div id="profileMeta" class="mt-3 flex flex-wrap gap-3 text-xs text-yellow-100/40"></div>
+            </div>
+          </div>
+
+          <!-- Stats row -->
+          <div id="statsRow" class="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4"></div>
+        </div>
+      </div>
+
+      <!-- Guardian Class + Strengths -->
+      <div id="strengthSection" class="glass rounded-[1.5rem] p-5 sm:p-7 fade-up delay-2">
+        <div class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p class="text-xs uppercase tracking-[0.24em] text-yellow-300/45">Guardian Class</p>
+            <h3 id="guardianClass" class="display mt-2 text-3xl font-bold text-yellow-50 sm:text-4xl"></h3>
+            <p id="classDesc" class="mt-2 max-w-xl text-sm leading-7 text-yellow-50/60"></p>
+          </div>
+          <div id="classBadge" class="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl border border-yellow-400/20 bg-yellow-400/8 text-3xl"></div>
+        </div>
+
+        <div class="mb-5">
+          <p class="mb-4 text-xs uppercase tracking-[0.24em] text-yellow-300/45">Strength Breakdown</p>
+          <div id="skillsGrid" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"></div>
+        </div>
+      </div>
+
+      <!-- Empire Timestamp -->
+      <div id="timestampCard" class="glass rounded-[1.5rem] p-5 sm:p-7 fade-up delay-4">
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p class="text-xs uppercase tracking-[0.24em] text-yellow-300/45">Guardian Since</p>
+            <p id="guardianSince" class="display mt-2 text-3xl font-bold text-yellow-400 sm:text-4xl"></p>
+            <p class="mt-2 text-sm text-yellow-50/50">Based on X account creation date — the origin point of your public presence.</p>
+          </div>
+          <div class="text-5xl opacity-20 select-none">⧖</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════ FOOTER -->
+  <footer class="relative-z border-t border-yellow-500/8 px-4 py-8 text-center sm:px-6">
+    <p class="text-xs uppercase tracking-[0.24em] text-yellow-100/25">Solflare Empire · Guardian Codex · G4G</p>
+  </footer>
+
+  <script>
+    // ─── CONFIG ────────────────────────────────────────────────
+    const WORKER_URL = "https://guardian-codex.shamelessson.workers.dev";
+
+    // ─── SKILL LIBRARY ─────────────────────────────────────────
+    const SKILLS = [
+      {
+        id: "media",
+        title: "Media Architect",
+        icon: "✦",
+        desc: "Crafts visual gravity through content, design, and creative output.",
+        keywords: ["video","edit","design","visual","motion","graphic","brand","content","creative","ui","ux","film","produc","art","creat","photo","reel","clip","cut","aesthetic"],
+      },
+      {
+        id: "builder",
+        title: "Vision Builder",
+        icon: "⬡",
+        desc: "Shapes ideas into systems, products, and polished executions.",
+        keywords: ["build","product","code","develop","web","app","launch","system","deploy","engineer","tech","software","program","site","stack","repo","github","ship"],
+      },
+      {
+        id: "community",
+        title: "Community Forger",
+        icon: "⚡",
+        desc: "Strengthens trust through connection, support, and ecosystem energy.",
+        keywords: ["communit","space","reply","support","engage","grow","connect","discord","twitter","network","people","collab","help","team","host","mod","dao","tribe"],
+      },
+      {
+        id: "educator",
+        title: "Education Sentinel",
+        icon: "✧",
+        desc: "Transforms complexity into clear guidance, tutorials, and onboarding flows.",
+        keywords: ["educat","teach","guide","tutorial","onboard","explain","thread","tips","learn","write","blog","document","walkthrough","mentor","cours","train"],
+      },
+      {
+        id: "scout",
+        title: "Empire Scout",
+        icon: "◈",
+        desc: "Surfaces early signals, market reads, and key narrative momentum.",
+        keywords: ["alpha","signal","trade","market","research","insight","scout","analy","crypto","nft","defi","solana","web3","blockchain","invest","token","wallet","sol"],
+      },
+      {
+        id: "lore",
+        title: "Lore Keeper",
+        icon: "☉",
+        desc: "Guards voice, story, culture, and symbolic identity across the Empire.",
+        keywords: ["story","lore","culture","narrative","identity","voice","copy","writ","language","brand","poet","creat","imagine","vision","inspire","dream"],
+      },
+    ];
+
+    // Guardian class definitions
+    const CLASSES = {
+      media:     { name: "Media Architect",     icon: "✦", desc: "Your primary force is creation — you shape the Empire's visual and narrative identity through consistent, high-quality output." },
+      builder:   { name: "Vision Builder",      icon: "⬡", desc: "You translate ideas into reality — building systems, products, and tools that expand the Empire's technical frontier." },
+      community: { name: "Community Forger",    icon: "⚡", desc: "Your energy binds the Empire together — you grow trust, spark conversations, and hold the social fabric strong." },
+      educator:  { name: "Education Sentinel",  icon: "✧", desc: "You make the Empire legible — breaking down complexity so every Guardian can move with clarity and confidence." },
+      scout:     { name: "Empire Scout",        icon: "◈", desc: "You read the field — surfacing signals, calling narratives early, and keeping the Empire ahead of the curve." },
+      lore:      { name: "Lore Keeper",         icon: "☉", desc: "You carry the Empire's memory — preserving voice, culture, and story across every front." },
+    };
+
+    // ─── DOM REFS ───────────────────────────────────────────────
+    const usernameInput   = document.getElementById("usernameInput");
+    const scanBtn         = document.getElementById("scanBtn");
+    const btnIcon         = document.getElementById("btnIcon");
+    const btnLabel        = document.getElementById("btnLabel");
+    const errorBox        = document.getElementById("errorBox");
+    const resultsSection  = document.getElementById("resultsSection");
+    const bannerImg       = document.getElementById("bannerImg");
+    const bannerWrap      = document.getElementById("bannerWrap");
+    const scanOverlay     = document.getElementById("scanOverlay");
+    const avatarImg       = document.getElementById("avatarImg");
+    const profileName     = document.getElementById("profileName");
+    const profileHandle   = document.getElementById("profileHandle");
+    const profileBio      = document.getElementById("profileBio");
+    const profileMeta     = document.getElementById("profileMeta");
+    const verifiedBadge   = document.getElementById("verifiedBadge");
+    const statsRow        = document.getElementById("statsRow");
+    const guardianClass   = document.getElementById("guardianClass");
+    const classDesc       = document.getElementById("classDesc");
+    const classBadge      = document.getElementById("classBadge");
+    const skillsGrid      = document.getElementById("skillsGrid");
+    const guardianSince   = document.getElementById("guardianSince");
+
+    // ─── UTILITIES ──────────────────────────────────────────────
+    function fmt(n) {
+      if (!n && n !== 0) return "—";
+      if (n >= 1_000_000) return (n / 1_000_000).toFixed(1).replace(/\.0$/, "") + "M";
+      if (n >= 1_000)     return (n / 1_000).toFixed(1).replace(/\.0$/, "") + "K";
+      return n.toLocaleString();
+    }
+
+    function formatDate(iso) {
+      if (!iso) return "Unknown";
+      try {
+        return new Date(iso).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+      } catch { return iso; }
+    }
+
+    function showError(msg) {
+      errorBox.innerHTML = `<div class="error-panel">${msg}</div>`;
+      errorBox.classList.remove("hidden");
+    }
+
+    function clearError() {
+      errorBox.innerHTML = "";
+      errorBox.classList.add("hidden");
+    }
+
+    function setScanState(scanning) {
+      scanBtn.disabled = scanning;
+      if (scanning) {
+        btnIcon.innerHTML = `<span class="spinner"></span>`;
+        btnLabel.textContent = "Scanning...";
+        scanOverlay.classList.remove("hidden");
+      } else {
+        btnIcon.textContent = "⚔";
+        btnLabel.textContent = "Scan Guardian";
+        scanOverlay.classList.add("hidden");
+      }
+    }
+
+    // ─── ANALYSIS ENGINE ────────────────────────────────────────
+    function analyzeProfile(bio, name, handle) {
+      const text = ` ${(bio + " " + name + " " + handle).toLowerCase()} `;
+      const scored = SKILLS.map(skill => {
+        let hits = 0;
+        skill.keywords.forEach(kw => { if (text.includes(kw)) hits++; });
+        return { skill, hits };
+      }).sort((a, b) => b.hits - a.hits);
+
+      // Ensure at least some skills show up even with sparse bios
+      const top = scored.filter(s => s.hits > 0);
+      const shown = top.length >= 2 ? top.slice(0, 6) : scored.slice(0, 4);
+      const dominant = shown[0].skill.id;
+
+      return { skills: shown, dominantId: dominant };
+    }
+
+    function buildSkillCard(skill, hits, index) {
+      const maxHits = 8;
+      const rawLevel = Math.min(10, Math.max(3, hits * 2 + 3));
+      const pct = rawLevel * 10;
+      const signal = hits >= 4 ? "High Signal" : hits >= 2 ? "Clear Signal" : "Emerging Signal";
+      const delay = index * 80;
+
+      return `
+        <div class="skill-card fade-up" style="animation-delay:${delay}ms">
+          <div class="flex items-start justify-between gap-3 mb-3">
+            <div>
+              <p style="font-size:0.65rem; letter-spacing:0.22em; text-transform:uppercase; color:var(--faint)">${signal}</p>
+              <h4 class="display mt-1 text-lg font-bold text-yellow-50">${skill.title}</h4>
+            </div>
+            <div style="width:40px;height:40px;border-radius:12px;border:1px solid rgba(234,179,8,0.16);background:rgba(234,179,8,0.07);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0">${skill.icon}</div>
+          </div>
+          <p style="font-size:0.8rem;line-height:1.65;color:var(--muted);margin-bottom:0.875rem">${skill.desc}</p>
+          <div class="flex items-center justify-between mb-2" style="font-size:0.7rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--faint)">
+            <span>Level ${rawLevel}</span>
+            <span>${pct} Power</span>
+          </div>
+          <div class="progress-bg" style="height:6px">
+            <div class="progress-fill" style="width:0%" data-target="${pct}%"></div>
+          </div>
+        </div>
+      `;
+    }
+
+    function animateProgressBars() {
+      requestAnimationFrame(() => {
+        document.querySelectorAll(".progress-fill[data-target]").forEach(bar => {
+          setTimeout(() => {
+            bar.style.width = bar.dataset.target;
+          }, 100);
+        });
+      });
+    }
+
+    // ─── RENDER PROFILE ─────────────────────────────────────────
+    function renderProfile(data) {
+      // twitterapi.io wraps in data.data or returns flat — handle both
+      const u = data?.data || data?.user || data;
+      if (!u || !u.userName) {
+        showError("Guardian not found. Check the username and try again.");
+        return;
+      }
+
+      // Avatar
+      avatarImg.src = u.profilePicture || `https://unavatar.io/x/${u.userName}`;
+      avatarImg.alt = `${u.name || u.userName} avatar`;
+
+      // Banner
+      if (u.coverPicture) {
+        bannerImg.src = u.coverPicture;
+        bannerImg.onload = () => {
+          bannerImg.classList.remove("hidden");
+          bannerWrap.classList.add("hidden-fallback");
+        };
+      }
+
+      // Name, handle, verified
+      profileName.textContent = u.name || u.userName;
+      profileHandle.textContent = `@${u.userName}`;
+      if (u.isBlueVerified || u.verified) {
+        verifiedBadge.classList.remove("hidden");
+        verifiedBadge.classList.add("inline-flex");
+      }
+
+      // Bio
+      profileBio.textContent = u.description || u.bio || "No bio provided.";
+
+      // Meta (location, website, joined)
+      const metaParts = [];
+      if (u.location)   metaParts.push(`📍 ${u.location}`);
+      if (u.createdAt)  metaParts.push(`🗓 Joined ${formatDate(u.createdAt)}`);
+      if (u.website || u.url) metaParts.push(`🔗 ${u.website || u.url}`);
+      profileMeta.innerHTML = metaParts.map(p => `<span>${p}</span>`).join('<span class="text-yellow-400/20">·</span>');
+
+      // Stats
+      const stats = [
+        { label: "Followers",  value: fmt(u.followers       ?? u.followersCount)  },
+        { label: "Following",  value: fmt(u.following       ?? u.followingCount)  },
+        { label: "Posts",      value: fmt(u.statusesCount   ?? u.tweetsCount)     },
+        { label: "Media",      value: fmt(u.mediaCount)                           },
+      ];
+      statsRow.innerHTML = stats.map(s => `
+        <div class="stat-chip">
+          <p style="font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--faint);margin-bottom:0.4rem">${s.label}</p>
+          <p style="font-size:1.25rem;font-weight:700;color:var(--text)">${s.value}</p>
+        </div>
+      `).join("");
+
+      // Analysis
+      const bioText = u.description || u.bio || "";
+      const { skills, dominantId } = analyzeProfile(bioText, u.name || "", u.userName);
+      const cls = CLASSES[dominantId] || CLASSES.community;
+      guardianClass.textContent = cls.name;
+      classDesc.textContent     = cls.desc;
+      classBadge.textContent    = cls.icon;
+
+      skillsGrid.innerHTML = skills.map((s, i) => buildSkillCard(s.skill, s.hits, i)).join("");
+      animateProgressBars();
+
+      // Guardian since
+      guardianSince.textContent = u.createdAt ? formatDate(u.createdAt) : "Unknown";
+
+      // Show results
+      resultsSection.classList.remove("hidden");
+      setTimeout(() => {
+        resultsSection.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 120);
+    }
+
+    // ─── SCAN HANDLER ───────────────────────────────────────────
+    async function doScan() {
+      clearError();
+      const raw = usernameInput.value.trim().replace(/^@/, "");
+      if (!raw) { showError("Please enter an X username."); return; }
+
+      setScanState(true);
+      resultsSection.classList.add("hidden");
+
+      try {
+        const res = await fetch(`${WORKER_URL}?username=${encodeURIComponent(raw)}`);
+        if (!res.ok) throw new Error(`Server returned ${res.status}`);
+        const data = await res.json();
+        if (data.error) throw new Error(data.error);
+        renderProfile(data);
+      } catch (err) {
+        showError(`Could not load profile: ${err.message}. Make sure the username is correct and try again.`);
+      } finally {
+        setScanState(false);
+      }
+    }
+
+    scanBtn.addEventListener("click", doScan);
+    usernameInput.addEventListener("keydown", e => { if (e.key === "Enter") doScan(); });
+  </script>
+
+</body>
+</html>
